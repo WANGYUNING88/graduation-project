@@ -1,0 +1,143 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="renderer" content="webkit">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>异清轩博客管理系统</title>
+<link rel="stylesheet" type="text/css" href="css/bootstrap.min.css">
+<link rel="stylesheet" type="text/css" href="css/style.css">
+<link rel="stylesheet" type="text/css" href="css/login.css">
+<link rel="apple-touch-icon-precomposed" href="images/icon/icon.png">
+<link rel="shortcut icon" href="images/icon/favicon.ico">
+<script src="js/jquery-2.1.4.min.js"></script>
+<!--[if gte IE 9]>
+  <script src="js/jquery-1.11.1.min.js" type="text/javascript"></script>
+  <script src="js/html5shiv.min.js" type="text/javascript"></script>
+  <script src="js/respond.min.js" type="text/javascript"></script>
+  <script src="js/selectivizr-min.js" type="text/javascript"></script>
+<![endif]-->
+<!--[if lt IE 9]>
+  <script>window.location.href='upgrade-browser.html';</script>
+<![endif]-->
+</head>
+
+<body class="user-select">
+<div class="container">
+  <div class="siteIcon"><img src="images/icon/icon.png" alt="" data-toggle="tooltip" data-placement="top" title="欢迎使用异清轩博客管理系统" draggable="false" /></div>
+  <form  method="post" autocomplete="off" class="form-signin">
+    <h2 class="form-signin-heading">管理员登录</h2>
+    <label for="userName" class="sr-only">用户名</label>
+    <input type="text" id="userName" name="username" class="form-control" placeholder="请输入用户名" required autofocus autocomplete="off" maxlength="18">
+    <font color ="red" id="nameError">&nbsp;</font>
+    <label for="userPwd" class="sr-only">密码</label>
+    <input type="password" id="userPwd"  name="userpwd" class="form-control" placeholder="请输入密码" required autocomplete="off" maxlength="18">
+    <font color ="red" id="pwdError" >&nbsp;</font>
+    <button class="btn btn-lg btn-primary btn-block" type="submit" id="signinSubmit">登录</button>
+  </form>
+  <div class="footer">
+    <p><a href="index.jsp" data-toggle="tooltip" data-placement="left" title="不知道自己在哪?">回到后台 →</a></p>
+  </div>
+</div>
+<script src="js/bootstrap.min.js"></script> 
+<script src="build/toastr.min.js"></script>
+<script type="text/javascript">
+
+        toastr.options.positionClass = 'toast-bottom-right';
+ </script>
+<script src="js/common.js"></script>
+<script>
+
+$('[data-toggle="tooltip"]').tooltip();
+
+window.oncontextmenu = function(){
+	//return false;
+};
+$('.siteIcon img').click(function(){
+	window.location.reload();
+}); 
+
+ window.onload =function()
+    {
+        document.getElementById("signinSubmit").setAttribute("disabled", true);
+
+       
+    };
+$("#userPwd").mouseout(function(){
+			
+	            if($("#userName").val()==""||$("#userPwd").val()=="")
+	            {
+	            	
+	                $("#signinSubmit").attr('disabled',true);
+	            }else
+	            {
+	            	
+	                $("#signinSubmit").attr('disabled',false);
+	            	
+	            }
+			
+        });
+$("#userPwd").keyup(function(){
+	var text = $("#userPwd").val();
+	var patt1 = new RegExp(/\s+/g);
+    if (patt1.test(text)) {
+		$('#pwdError').text('密码含有空格');
+	}else{
+		$('#pwdError').html("&nbsp;");
+	}
+});
+$("#userName").keyup(function(){
+	var text = $("#userName").val();
+	var pattern = new RegExp("[`~!@#$^&*()=|{}':;',\\[\\]. <>/?~！@#￥……&*（）——|{}【】‘；：”“'。，、？%]");
+	var result = text.match(pattern);
+	if (result){
+    	$('#nameError').text('用户名含有特殊字符');
+    	$("#signinSubmit").attr('disabled',true);
+     }else{
+    	$("#signinSubmit").attr('disabled',false);
+    	$('#nameError').html("&nbsp;");
+     }
+	
+}).change(function(){
+	var text = $("#userName").val();
+	text = Trim(text,"g");
+	$("#userName").val(text);
+	$("#signinSubmit").attr('disabled',false);
+	$('#nameError').html("&nbsp;");
+}) 
+
+
+$('#signinSubmit').click(function(){
+	$("#signinSubmit").text('正在验证...');
+	$("#signinSubmit").attr('disabled',true);
+    $.ajax({
+    	
+        type: "POST",
+        url: "adminLogin.do",
+        data: {username:$("#userName").val(), userpwd:$("#userPwd").val()},
+        dataType: "json",
+        success: function(data){
+                   var admin_id = data.result;
+                   console.log("admin_id"+admin_id);
+                   if(admin_id !=  0){
+                	   toastr.success('登录成功');
+    				   setTimeout("window.location.href ='index.jsp'",1000);
+                	   
+                   }
+                   
+                   $("#signinSubmit").attr('disabled',false);
+                   $("#signinSubmit").text('登录');
+                   if(admin_id ==0){
+                	   toastr.error('登录失败');
+                	   $('#nameError').text('用户名密码不匹配');
+                   }
+                   
+                 }
+    });
+});
+
+</script>
+
+</body>
+</html>
