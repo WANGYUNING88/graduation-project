@@ -157,6 +157,9 @@ public class ColumnAction {
 			if(list.size()%CommonUtil.RECORD!=0) {
 				pageNum+=1;
 			}
+			if(pageNum==0) {
+				pageNum=1;
+			}
 			JSONObject json = new JSONObject();
 			json.put("result", pageNum);
 			json.put("columnNum", list.size());

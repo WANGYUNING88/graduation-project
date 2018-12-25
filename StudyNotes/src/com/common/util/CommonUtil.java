@@ -67,33 +67,46 @@ public class CommonUtil {
 			 email.setHostName("smtp.163.com");//邮箱的SMTP服务器，一般123邮箱的是smtp.123.com,qq邮箱为smtp.qq.com
 			 email.setCharset("utf-8");//设置发送的字符类型
 			 email.addTo(addressee);//设置收件人
+			 email.setSSL(true);
 			 email.setFrom("15703286577@163.com","个人笔记");//发送人的邮箱为自己的，用户名可以随便填
 			 email.setAuthentication("15703286577@163.com","qq247197442");//设置发送人到的邮箱和用户名和授权码(授权码是自己设置的)
 			 String num = getNowTimeNum();
 			 String subject="";
 			 String msg = "";
+			 msg+="<html lang='zh-CN'><head ><meta charset='utf-8'>"
+					 + "</head><body>重置密码链接";
+
+
 			 switch (type) {
 			case 1:
 				subject = "重置密码链接";
-				msg ="请点击<a src='resettingPassword.do?admin_id="+admin_id+"&num="+num+"'>这里</a>重置密码";
+				msg +="<h1>请点击<a rel='external nofollow' target='_blank' href='http://localhost:8080/StudyNotes/manager/resettingPassword.do?admin_id="+admin_id+"&num="+num+"'>这里</a>重置密码</h1>";
+				msg +="<font color='red'>（有效时间为10分钟）</font>";
 			
 				break;
 			case 2:
 				subject = "重置密码链接";
-				msg ="重置密码<font color='green'>成功</font>，返回<a src='index.do'>登录</a>页面";
+				msg +="<h1>重置密码<font color='green'>成功</font>，初始密码为123456，返回<a src='index.do'>登录</a>页面<h1>";
 			
 				break;
 			case 3:
 				subject = "重置密码链接";
-				msg ="重置密码<font color='red'>失败</font>，返回<a src='index.do'>登录</a>页面，重新重置";
+				msg +="<h1>重置密码<font color='red'>失败</font>，返回<a src='index.do'>登录</a>页面，重新重置</h1>";
+				msg+="原因:更新密码是出错！";
+			
+				break;
+			case 4:
+				subject = "重置密码链接";
+				msg +="<h1>重置密码<font color='red'>失败</font>，返回<a src='index.do'>登录</a>页面，重新重置</h1>";
+				msg+= "原因:链接超时！";
 			
 				break;
 			default:
 				break;
 			}
-			
+			 msg+="</body></html>";
 			 email.setSubject(subject);
-			 email.setMsg(msg);
+			 email.setHtmlMsg(msg);
 			 email.send();
 			 return true;
 			 

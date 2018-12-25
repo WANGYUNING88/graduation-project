@@ -1,5 +1,34 @@
 /*
- * 获取浏览器
+ * 验证有无特殊字符
+ */
+function checkString(text){
+	var pattern = new RegExp("[`~!@#$^&*()=|{}':;',\\[\\].<>《》/?~！@#￥……&*（）——|{}【】‘；：”“'。，、？]");
+   
+	if(pattern.test(text)){
+		return true;
+	}else{
+		return false;
+	}
+	
+}
+/*
+ * 验证邮箱格式
+ */
+function checkEmail(myemail){
+	var myReg= 
+		 new RegExp("^[a-z0-9]+([._\\-]*[a-z0-9])*@([a-z0-9]+[-a-z0-9]*[a-z0-9]+.){1,63}[a-z0-9]+$"); //正则表达式
+
+	if(myReg.test(myemail)){
+			return true;
+		}else{
+			return false;
+		}
+	}
+
+/*
+ 
+
+* 获取浏览器
  */
 function getLiuLanQi(){
 		var Sys = {};
@@ -254,7 +283,7 @@ function getLiuLanQi(){
     			   var result = data.result;
     			   if(result==true){
     				   toastr.success('退出成功');
-    				   setTimeout("window.location.href ='login.html'",1000);
+    				   setTimeout("window.location.href ='login.jsp'",1000);
 
     			   }else{
     				   toastr.error('退出失败');

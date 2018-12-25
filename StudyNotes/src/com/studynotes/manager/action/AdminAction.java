@@ -2,6 +2,7 @@ package com.studynotes.manager.action;
 
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -31,9 +32,8 @@ public class AdminAction {
 	@Autowired
 	private AdminService adminService;
 	@RequestMapping("/index")
-	@ResponseBody 
-	public String index(HttpServletRequest request,HttpSession session,HttpServletResponse response) {
-		return "index.jsp";
+	public String index( ) {
+		return "index";
 	}
 	
 	/*
@@ -193,6 +193,9 @@ public class AdminAction {
 			adminInfo.setAdmin_password(password);
 			 result = adminService.updateAdmin(adminInfo);
 		}
+		if(result==true) {
+			session.removeAttribute("adminLoginIng");
+		}
 		JSONObject json = new JSONObject();
 		json.put("result", result);
 			try {
@@ -219,6 +222,84 @@ public class AdminAction {
 				e.printStackTrace();
 			}
 		}
+	/*
+	 * 重置密码
+	 */
+	@RequestMapping("/selectResetting")
+	@ResponseBody 
+	public void selectResetting(HttpServletRequest request,HttpSession session,HttpServletResponse response) {
+		response.setCharacterEncoding("UTF-8");
+		AdminInfo adminInfo = new AdminInfo();
+		//获取参数
+		String name = request.getParameter("name");
+		String email = request.getParameter("email");
+		String cn = request.getParameter("cn");
+		System.out.println("重置密码获取的参数"+"name "+name+"email "+email+"cn "+cn);
+		boolean result =false;
+		String msg = "";
+		adminInfo.setAdmin_cn(cn);
+		adminInfo.setAdmin_email(email);
+		adminInfo.setAdmin_name(name);
+		AdminInfo admin = adminService.selectResetting(adminInfo);
+		if(admin!=null){
+			msg+="管理员身份验证成功！";
+			boolean emailFlag =  CommonUtil.sendEmail(1,email,admin.getAdmin_id());
+			if(emailFlag==true){
+				result = true;
+				msg+="验证邮件已发送至"+email;
+			}else {
+				msg+="验证邮件发送失败       \n请联系超级管理员更换邮箱，或密码";
+			}
+		}else{
+			msg+="未找到该管理员，请填写正确的信息！";
+		}
+
+	
+		JSONObject json = new JSONObject();
+		json.put("result", result);
+		json.put("msg", msg);
+			try {
+				PrintWriter pw = response.getWriter();
+				pw.write(json.toJSONString());
+			} catch (IOException e) {	
+				e.printStackTrace();
+			}
+		}
+	/*
+	 * 重置密码
+	 */
+	@RequestMapping("/resettingPassword")
+	public String resettingPassword(HttpServletRequest request,HttpSession session,HttpServletResponse response) {
+		response.setCharacterEncoding("UTF-8");
+		String num = CommonUtil.getNowTimeNum();
+		BigInteger newTime = new BigInteger(num);
+		
+		//获取参数
+		String admin_id = request.getParameter("admin_id");
+		int adminId = Integer.parseInt(admin_id);
+		String oldNum = request.getParameter("num");
+		BigInteger oldTime = new BigInteger(oldNum);
+		
+		System.out.println("重置密码从密码获取的参数"+"admin_id "+admin_id+"oldNum "+oldNum+"newTime "+newTime);
+		boolean result =false;
+		
+		BigInteger time = new BigInteger("600");
+		AdminInfo admin = adminService.selectAdminInfoById(adminId);
+		admin.setAdmin_password("123456");
+		if(time.compareTo(oldTime.subtract(newTime))>=0) {
+			result = adminService.updateAdmin(admin);
+
+			if(result ==true) {
+				
+				CommonUtil.sendEmail(2, admin.getAdmin_email(), adminId);
+			}else {
+				CommonUtil.sendEmail(3, admin.getAdmin_email(), adminId);
+			}
+		}else {
+			CommonUtil.sendEmail(4, admin.getAdmin_email(), adminId);
+		}
+		return "result";
+	}
 //	@RequestMapping("/adminRegister")
 //	public String register(AdminInfo admin,Model model) {
 //		boolean result = adminService.register(admin);

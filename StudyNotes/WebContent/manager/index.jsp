@@ -32,7 +32,7 @@
 	if(adminLoginIng==null){
 		adminLoginIng = new AdminInfo();
 		adminLoginIng.setAdmin_id(-1);
-		response.sendRedirect("login.html");
+		response.sendRedirect("login.jsp");
 	}
 %>
 <script type="text/javascript">
@@ -55,7 +55,7 @@
                 <li><a title="查看您的登录记录" data-toggle="modal" data-target="#seeUserLoginlog">登录记录</a></li>
               </ul>
             </li>
-            <li><a href="login.html" onClick="if(!confirm('是否确认退出？'))return false;">退出登录</a></li>
+            <li><a href="login.jsp" onClick="if(!confirm('是否确认退出？'))return false;">退出登录</a></li>
             <li><a data-toggle="modal" data-target="#WeChat">帮助</a></li>
           </ul>
           <form action="" method="post" class="navbar-form navbar-right" role="search">
@@ -75,7 +75,7 @@
 	  ＜jsp:forward page="" /＞
  // }
  <c:if test="${adminLoginIng.admin_id !=null }">
-＜jsp:forward page="login.html" /＞
+＜jsp:forward page="login.jsp" /＞
 </c:if>
 -->
   <div class="row">

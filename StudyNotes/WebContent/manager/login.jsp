@@ -1,3 +1,6 @@
+
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
 <!doctype html>
 <html lang="zh-CN">
 <head>
@@ -11,7 +14,15 @@
 <link rel="stylesheet" type="text/css" href="css/login.css">
 <link rel="apple-touch-icon-precomposed" href="images/icon/icon.png">
 <link rel="shortcut icon" href="images/icon/favicon.ico">
+<link href="build/toastr.min.css" rel="stylesheet" />
+<link href="build/toastr.css" rel="stylesheet" />
 <script src="js/jquery-2.1.4.min.js"></script>
+<script src="build/toastr.min.js"></script>
+<script type="text/javascript">
+
+        toastr.options.positionClass = 'toast-bottom-right';
+ </script>
+ <script type="text/javascript" language="javascript" src="js/common.js"></script>
 <!--[if gte IE 9]>
   <script src="js/jquery-1.11.1.min.js" type="text/javascript"></script>
   <script src="js/html5shiv.min.js" type="text/javascript"></script>
@@ -37,7 +48,49 @@
     <button class="btn btn-lg btn-primary btn-block" type="submit" id="signinSubmit">登录</button>
   </form>
   <div class="footer">
-    <p><a href="index.jsp" data-toggle="tooltip" data-placement="left" title="不知道自己在哪?">回到后台 →</a></p>
+    <p><a data-toggle="modal" data-target="#resetting" data-placement="left" title="忘记密码？">忘记密码？→</a></p>
+  </div>
+</div>
+<!--个人信息模态框-->
+<div class="modal fade" id="resetting" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+  <div class="modal-dialog" role="document">
+
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+          <h4 class="modal-title" >重置</h4>
+        </div>
+        <div class="modal-body">
+          <table class="table" style="margin-bottom:0px;">
+            <thead>
+              <tr> </tr>
+            </thead>
+            <tbody>
+             <tr id="tr1" style="display:none"><td><input type='text' id ='admin_id' value='${sessionScope.adminLoginIng.admin_id}' /></td></tr>
+              <tr>
+                <td wdith="20%">姓名:</td>
+                <td width="80%"><input type="text"  class="form-control" id="userCn1" maxlength="10" autocomplete="off" /></td>
+              </tr>
+              <tr>
+                <td wdith="20%">用户名:</td>
+                <td width="80%"><input type="text"  class="form-control" id="userName1" maxlength="10" autocomplete="off" /></td>
+              </tr>
+              <tr>
+                <td wdith="20%">邮箱:</td>
+                <td width="80%"><input type="text" class="form-control" id="userEmail1" maxlength="30" autocomplete="off" /></td>
+              </tr>             
+            </tbody>
+            <tfoot>
+              <tr></tr>
+            </tfoot>
+          </table>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+          <button type="submit" class="btn btn-primary" onClick='subminResetting()'>提交</button>
+        </div>
+      </div>
+   
   </div>
 </div>
 <script src="js/bootstrap.min.js"></script> 
@@ -136,6 +189,98 @@ $('#signinSubmit').click(function(){
                  }
     });
 });
+
+/*
+ * 
+ */
+
+/*
+ * cn[0] 0通过 1未通过
+ */
+	$("#userName1").change(function(){
+		var text = $("#userName1").val();
+		if(text!=''){
+			text = Trim(text,"g");
+			$("#userName1").val(text);
+	    	
+		}
+	}) ;
+	$("#userCn1").change(function(){
+		var text = $("#userCn1").val();
+		if(text!=''){
+			text = Trim(text,"g");
+			$("#userCn1").val(text);
+	    	}
+	});
+	$("#userEmail1").change(function(){
+		var text = $("#userEmail1").val();
+		if(text!=''){
+		text = Trim(text,"g");
+		$("#userEmail1").val(text);		
+		}
+    	
+	});
+	function subminResetting(){
+		var text0 = $("#userCn1").val();
+		var text1 = $("#userName1").val();
+		var text2 = $("#userEmail1").val();
+		console.log("重置密码:"+text0+" "+text1+" "+text2);
+		var r =0;
+		var msg=''
+		if(text0==''){
+			r=1;
+			msg+="姓名必填  \n";
+		}
+		if(text1==''){
+			r=1;
+			msg+="用户名必填  \n";
+		}
+		if(text0==''){
+			r=1;
+			msg+="邮箱必填  ";
+		}
+		if(r==0){
+			var e =0;
+			if(checkString(text0)==true){
+				msg+="姓名含有特殊字符  </br>";
+				e=1;
+			}
+			if(checkString(text1)==true){
+				msg+="用户名名含有特殊字符  </br>";
+				e=1;
+			}
+			if(checkEmail(text2)==false){
+				msg+="邮箱格式错误  ";
+				e=1;
+			}
+			if(e==0){
+				$.ajax({
+					dataType:'json',
+					type:'POST',
+					url:'selectResetting.do',
+					data:{
+						'cn':text0,
+						'name':text1,
+						'email':text2
+					},
+					success:function (data){
+						var result = data.result;
+						var msg = data.msg;
+						if(result==true){
+							toastr.success(msg,"发送成功");
+						}else{
+							toastr.error(msg,"发送失败");
+						}
+					}
+				});
+			}else{
+				toastr.warning(msg);
+			}
+		}else{
+			toastr.warning(msg);
+		}
+		
+	}
 
 </script>
 

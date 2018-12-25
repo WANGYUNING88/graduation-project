@@ -19,6 +19,24 @@ public class AdminDao {
 	@Autowired
 	private SessionFactory sessionFactory;
 	/*
+	 * 重置密码
+	 * 查询用户
+	 */
+	public AdminInfo selectResetting(AdminInfo admin) {
+		// TODO Auto-generated method stub
+		Session session = sessionFactory.getCurrentSession();
+		String sql = "from AdminInfo "
+				+ "where admin_name=? and admin_cn=? and admin_email=?";
+		Query query = session.createQuery(sql);
+		query.setParameter(0, admin.getAdmin_name());
+		query.setParameter(1, admin.getAdmin_cn());
+		query.setParameter(2, admin.getAdmin_email());
+		AdminInfo adminLogined = (AdminInfo)query.uniqueResult();
+		
+		
+		return adminLogined;
+	}
+	/*
 	 * 登录 查询用户
 	 *admin_id admin_password
 	 * 

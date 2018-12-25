@@ -41,7 +41,7 @@
 	if(adminLoginIng==null){
 		adminLoginIng = new AdminInfo();
 		adminLoginIng.setAdmin_id(-1);
-		response.sendRedirect("login.html");
+		response.sendRedirect("login.jsp");
 	}
 %>
 <body class="user-select">
@@ -686,7 +686,7 @@ function selectAllColumnByPage(type,page){
 								selectAllColumnByPage(2,PAGES);
 								selectFatherColumn();
 							}else{
-								toastr.error('id: '+id+'删除成功');
+								toastr.error('id: '+id+'删除失败');
 							}
 							console.log("删除"+result);
 								  

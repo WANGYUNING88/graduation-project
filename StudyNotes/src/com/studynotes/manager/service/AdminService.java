@@ -43,4 +43,7 @@ public class AdminService {
 	public boolean updateAdmin(AdminInfo adminInfo) {
 		return adminDao.updateAdmin(adminInfo);
 	}
+	public AdminInfo selectResetting(AdminInfo admin) {
+		return adminDao.selectResetting(admin);
+	}
 }
