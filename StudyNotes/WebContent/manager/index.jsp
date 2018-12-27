@@ -9,7 +9,7 @@
 <meta name="renderer" content="webkit">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>异清轩博客管理系统</title>
+<title>个人学习笔记管理系统</title>
 <link rel="stylesheet" type="text/css" href="css/bootstrap.min.css">
 <link rel="stylesheet" type="text/css" href="css/style.css">
 <link rel="stylesheet" type="text/css" href="css/font-awesome.min.css">
@@ -342,7 +342,7 @@
 <!--右键菜单列表-->
 <div id="rightClickMenu">
   <ul class="list-group rightClickMenuList">
-    <li class="list-group-item disabled">欢迎访问异清轩博客</li>
+    <li class="list-group-item disabled">欢迎访问个人学习笔记</li>
     <li class="list-group-item"><span>IP：</span><span id="admin_Login_ip"></span></li>
     <li class="list-group-item"><span>地址：</span>河北省石家庄市</li>
     <li class="list-group-item"><span>系统：</span>Windows10 </li>

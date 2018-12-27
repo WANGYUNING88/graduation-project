@@ -8,14 +8,21 @@
 <meta name="renderer" content="webkit">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>异清轩博客</title>
+<title>个人学习笔记</title>
 <link rel="stylesheet" type="text/css" href="css/bootstrap.min.css">
 <link rel="stylesheet" type="text/css" href="css/nprogress.css">
 <link rel="stylesheet" type="text/css" href="css/style.css">
 <link rel="stylesheet" type="text/css" href="css/font-awesome.min.css">
 <link rel="apple-touch-icon-precomposed" href="images/icon/icon.png">
 <link rel="shortcut icon" href="images/icon/favicon.ico">
+<link href="build/toastr.min.css" rel="stylesheet" />
+<link href="build/toastr.css" rel="stylesheet" />
 <script src="js/jquery-2.1.4.min.js"></script>
+<script src="build/toastr.min.js"></script>
+<script type="text/javascript">
+
+        toastr.options.positionClass = 'toast-bottom-right';
+ </script>
 <script src="js/nprogress.js"></script>
 <script src="js/jquery.lazyload.min.js"></script>
 <!--[if gte IE 9]>
@@ -48,10 +55,10 @@
         </ul>
         <c:choose>
 	<c:when test="${sessionScope.userLogin==null}">
-	 <a data-toggle="modal" data-target="#loginModal" class="login" rel="nofollow">Hi,请登录</a>&nbsp;&nbsp;<a href="javascript:;" class="register" rel="nofollow">我要注册</a>&nbsp;&nbsp;<a href="" rel="nofollow">找回密码</a> 
+	 <a data-toggle="modal" data-target="#loginModal" class="login" rel="nofollow">Hi,请登录</a>&nbsp;&nbsp;<a data-toggle="modal" data-target="#registerModal" register class="register" rel="nofollow">我要注册</a>&nbsp;&nbsp;<a href="" rel="nofollow">找回密码</a> 
 	</c:when>
 	<c:otherwise>
-	 <span>欢迎，${userLogin.user_cn}</span>&nbsp;&nbsp;<a href="javascript:;" class="register" rel="nofollow">个人资料</a> 
+	 <span>欢迎，<span id= "timeQuantum"></span><font color="orange">${userLogin.user_cn}</font></span>&nbsp;&nbsp;<a data-toggle="modal" data-target="#updateModal" class="update" rel="nofollow">个人资料</a> &nbsp;&nbsp;<a href="javascript:;" class="quit" rel="nofollow" onclick="quit()">退出登录</a> 
 	</c:otherwise>
 </c:choose> 
        </div>
@@ -61,7 +68,7 @@
       </div>
       <div class="collapse navbar-collapse" id="header-navbar">
         <ul class="nav navbar-nav navbar-right">
-          <li class="hidden-index active"><a data-cont="异清轩首页" href="index.html">异清轩首页</a></li>
+          <li class="hidden-index active"><a data-cont="个人学习笔记首页" href="index.html">个人学习笔记首页</a></li>
           <li><a href="category.html">前端技术</a></li>
           <li><a href="category.html">后端程序</a></li>
           <li><a href="category.html">管理系统</a></li>
@@ -83,7 +90,7 @@
   <div class="content-wrap">
     <div class="content">
       <div class="jumbotron">
-        <h1>欢迎访问异清轩博客</h1>
+        <h1>欢迎访问个人学习笔记</h1>
         <p>在这里可以看到前端技术，后端程序，网站内容管理系统等文章，还有我的程序人生！</p>
       </div>
       <div id="focusslide" class="carousel slide" data-ride="carousel">
@@ -181,7 +188,7 @@
             <ul>
               <li>
                 <time datetime="2016-01-04">01-04</time>
-                <a href="" target="_blank">欢迎访问异清轩博客</a></li>
+                <a href="" target="_blank">欢迎访问个人学习笔记</a></li>
               <li>
                 <time datetime="2016-01-04">01-04</time>
                 <a target="_blank" href="">在这里可以看到前端技术，后端程序，网站内容管理系统等文章，还有我的程序人生！</a></li>
@@ -290,10 +297,93 @@
     </div>
   </div>
 </div>
+<!--修改用户态框-->
+<div class="modal fade user-select" id="updateModal" tabindex="-1" role="dialog" aria-labelledby="updateModalLabel">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+          <h4 class="modal-title" id="updateModalLabel"></h4>
+        </div>
+        <div class="modal-body">
+        <div class="form-group">
+            <label for="updateModalUserNmae">id</label>
+            <input type="text" class="form-control" id="updateModalUserId"  autofocus maxlength="15" autocomplete="off" required value="${userLogin.user_id}">
+          </div>
+          <div class="form-group">
+            <label for="updateModalUserNmae">用户名</label>
+            <input type="text" class="form-control" id="updateModalUserNmae"  autofocus maxlength="15" autocomplete="off" required value="${userLogin.user_name}">
+          </div>
+          <div class="form-group">
+            <label for="updateModalUserCn">姓名</label>
+            <input type="text" class="form-control" id="updateModalUserCn"  autofocus maxlength="15" autocomplete="off" required value="${userLogin.user_cn}">
+          </div>
+          <div class="form-group">
+            <label for="updateModalUserEmail">邮箱</label>
+            <input type="text" class="form-control" id="updateModalUserEmail"  maxlength="18" autocomplete="off" required value="${userLogin.user_email}">
+          </div>
+	        
+	        <div class="form-group">
+	            <label for="updateModalUserPwd1">旧密码</label>
+	            <input type="password" class="form-control" id="updateModalUserPwd1" placeholder="请输入密码" maxlength="18" autocomplete="off" required>
+	          </div>
+	          <div class="form-group">
+	            <label for="updateModalUserPwd2">新密码</label>
+	            <input type="password" class="form-control" id="updateModalUserPwd2" placeholder="请再输入密码确定" maxlength="18" autocomplete="off" required>
+	          </div>
+	           <div class="form-group">
+	            <label for="updateModalUserPwd3">确认新密码</label>
+	            <input type="password" class="form-control" id="updateModalUserPwd3" placeholder="请再输入密码确认" maxlength="18" autocomplete="off" required>
+	          </div>
+	        <div class="modal-footer">
+	          <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+	          <button type="submit" class="btn btn-primary" onclick="update()">修改</button>
+	        </div>
+        </div>
+    </div>
+  </div>
+</div>
+<!--登录注册模态框-->
+<div class="modal fade user-select" id="registerModal" tabindex="-1" role="dialog" aria-labelledby="registerModalLabel">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+          <h4 class="modal-title" id="registerModalLabel">注册</h4>
+        </div>
+        <div class="modal-body">
+          <div class="form-group">
+            <label for="registerModalUserNmae">用户名</label>
+            <input type="text" class="form-control" id="registerModalUserNmae" placeholder="请输入用户名" autofocus maxlength="15" autocomplete="off" required>
+          </div>
+          <div class="form-group">
+            <label for="registerModalUserCn">姓名</label>
+            <input type="text" class="form-control" id="registerModalUserCn" placeholder="请输入姓名" autofocus maxlength="15" autocomplete="off" required>
+          </div>
+          <div class="form-group">
+            <label for="registerModalUserPwd1">密码</label>
+            <input type="password" class="form-control" id="registerModalUserPwd1" placeholder="请输入密码" maxlength="18" autocomplete="off" required>
+          </div>
+           <div class="form-group">
+            <label for="registerModalUserPwd2">确定密码</label>
+            <input type="password" class="form-control" id="registerModalUserPwd2" placeholder="请再输入密码确定" maxlength="18" autocomplete="off" required>
+          </div>
+          <div class="form-group">
+            <label for="registerModalUserEmail">邮箱</label>
+            <input type="text" class="form-control" id="registerModalUserEmail" placeholder="请输入邮箱" maxlength="18" autocomplete="off" required>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+          <button type="submit" class="btn btn-primary" onclick="register()">注册</button>
+        </div>
+    </div>
+  </div>
+</div>
 <!--右键菜单列表-->
 <div id="rightClickMenu">
   <ul class="list-group rightClickMenuList">
-    <li class="list-group-item disabled">欢迎访问异清轩博客</li>
+    <li class="list-group-item disabled">欢迎访问个人学习笔记</li>
     <li class="list-group-item"><span>IP：</span><span id="ip"></span></li>
     <li class="list-group-item"><span>地址：</span><span id="city"></span></li>
     <li class="list-group-item"><span>系统：</span><span id="system"></span> </li>
@@ -322,29 +412,13 @@
  var liulanqi =getLiuLanQi();
  console.log("liulanqi   "+liulanqi);
  $('#liulanqi').html(liulanqi);
+ var timeQuantum = getTimeQuantum();
+ $('#timeQuantum').html(timeQuantum);
+ setInterval(function(){
+	 var timeQuantum = getTimeQuantum();
+	 $('#TimeQuantum').html(timeQuantum);
+	},1000*60*10);
  
-	function login(){
-		var name = $('#loginModalUserNmae').val();
-		var password = $('#loginModalUserPwd').val();
-		$.ajax({
-			dataType:"json",
-			data:{
-				"name":name,
-				"password":password
-			},
-			type:"POST",
-			url:"userLogin.do",
-			success:function(data){
-				var result = data.result;
-				if(result == true){
-					
-				}
-			},
-			error:function(data){
-				console.log(data);
-			}
-		});
-	}
 </script>
 </body>
 </html>

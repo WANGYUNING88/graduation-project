@@ -52,6 +52,65 @@ public class UserAction {
 		
 	}
 	/*
+	 * 用户注册
+	 */
+	@RequestMapping("/userInsert")
+	public void userInsert(HttpServletRequest request,HttpServletResponse response,HttpSession session) {
+		String name = request.getParameter("name");
+		String password = request.getParameter("password");
+		String cn = request.getParameter("cn");
+		String email = request.getParameter("email");
+		User user = new User();
+		user.setUser_name(name);
+		user.setUser_password(password);
+		user.setUser_cn(cn);
+		user.setUser_email(email);
+		boolean result = userService.insert(user);
+		
+		JSONObject json = new JSONObject();
+		json.put("result", result);
+		try {
+			PrintWriter pw = response.getWriter();
+			pw.write(json.toJSONString());
+			System.out.println(json.toJSONString());
+		} catch (IOException e) {	
+			e.printStackTrace();
+		}
+		
+	}
+	/*
+	 * 用户信息修改
+	 */
+	@RequestMapping("/userUpdate")
+	public void userUpdate(HttpServletRequest request,HttpServletResponse response,HttpSession session) {
+		String id = request.getParameter("id");
+		String name = request.getParameter("name");
+		String password = request.getParameter("password");
+		String cn = request.getParameter("cn");
+		String email = request.getParameter("email");
+		boolean result = false;
+		if(id!="") {
+			int user_id = Integer.parseInt(id);
+			User user = new User();
+			user.setUser_id(user_id);
+			user.setUser_name(name);
+			user.setUser_password(password);
+			user.setUser_cn(cn);
+			user.setUser_email(email);
+			result = userService.update(user);
+		}
+		JSONObject json = new JSONObject();
+		json.put("result", result);
+		try {
+			PrintWriter pw = response.getWriter();
+			pw.write(json.toJSONString());
+			System.out.println(json.toJSONString());
+		} catch (IOException e) {	
+			e.printStackTrace();
+		}
+		
+	}
+	/*
 	 * 用户注销
 	 */
 	@RequestMapping("/userLoginOut")

@@ -2196,3 +2196,35 @@ color:#FFF;
 #loginModal .modal-body input {
 	color: #A0A0A0;
 }
+/*注册框*/
+#registerModal h4 {
+	cursor: default;
+	color: #3399CC;
+}
+#registerModal .modal-body {
+	padding: 15px 30px;
+}
+#registerModal .modal-body label {
+	color: #555;
+	font-size: 15px;
+	font-weight: 500;
+}
+#registerModal .modal-body input {
+	color: #A0A0A0;
+}
+/*修改个人信息*/
+#updateModal h4 {
+	cursor: default;
+	color: #3399CC;
+}
+#updateModal .modal-body {
+	padding: 15px 30px;
+}
+#updateModal .modal-body label {
+	color: #555;
+	font-size: 15px;
+	font-weight: 500;
+}
+#updateModal .modal-body input {
+	color: #A0A0A0;
+}

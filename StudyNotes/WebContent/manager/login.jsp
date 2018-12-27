@@ -8,7 +8,7 @@
 <meta name="renderer" content="webkit">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>异清轩博客管理系统</title>
+<title>个人学习笔记管理系统</title>
 <link rel="stylesheet" type="text/css" href="css/bootstrap.min.css">
 <link rel="stylesheet" type="text/css" href="css/style.css">
 <link rel="stylesheet" type="text/css" href="css/login.css">
@@ -36,7 +36,7 @@
 
 <body class="user-select">
 <div class="container">
-  <div class="siteIcon"><img src="images/icon/icon.png" alt="" data-toggle="tooltip" data-placement="top" title="欢迎使用异清轩博客管理系统" draggable="false" /></div>
+  <div class="siteIcon"><img src="images/icon/icon.png" alt="" data-toggle="tooltip" data-placement="top" title="欢迎使用个人学习笔记管理系统" draggable="false" /></div>
   <form  method="post" autocomplete="off" class="form-signin">
     <h2 class="form-signin-heading">管理员登录</h2>
     <label for="userName" class="sr-only">用户名</label>

@@ -1,3 +1,15 @@
+
+function getTimeQuantum(){
+	now = new Date(),hour = now.getHours() 
+	if(hour < 6){return("凌晨好！")} 
+	else if (hour < 9){return("早上好！")} 
+	else if (hour < 12){return("上午好！")} 
+	else if (hour < 14){return("中午好！")} 
+	else if (hour < 17){return("下午好！")} 
+	else if (hour < 19){return("傍晚好！")} 
+	else if (hour < 22){return("晚上好！")} 
+	else {return("夜里好！")} 
+}
 /*
  * 获取系统的版本
  */
@@ -247,64 +259,133 @@ function getLiuLanQi(){
     		}) ;
     	    
        }
-       function updateAdmin(){
-    	   var id = $('#admin_id').val();
-    	   var cn = $('#adminCn').val();
-    	   var name = $('#adminName').val();
-    	   var eamil = $('#adminEamil').val();
-    	   var old_password = $('#old_password').val();    	   
-    	   var password = $('#password').val();
-    	   var new_password = $('#new_password').val();
-    	   console.log("修改admin"+"id:"+id+"cn:"+cn+"name:"+name);
-    	   console.log("修改admin"+"old_password:"+old_password+"password:"+old_password+"new_password:"+new_password);
-    	   if(yanzheng==0){
-	    	   $.ajax({
-	    		    type: "POST",
-	    		    url: "updateAdminInfo.do", 
-	    		    dataType: "json",
-	    		    data:{
-	    		    	"id":id,
-	    		    	"cn":cn,
-	    		    	"name":name,
-	    		    	"eamil":eamil,
-	    		    	"password":password
-	    		    },
-	    		  //  async: false, 
-	    		    success:function(data){	
-	    		  		var result = data.result;
-	    		  		if(result==true){
-							toastr.success('admin_id: '+id+'修改成功');
-							quitAdmin();
-						}else{
-							toastr.error('admin_id: '+id+'修改成功');
-						}
-						console.log("修改用户"+result);
-	    		             
-	    		    },
-	    		    error:function(xhr,state,errorThrown){
-	    						//requesFail(xhr);
-	    		   	 console.log(xhr);
-	    			}
-	    			
-	    		
-	    		  
-	    		});
-    	   }
-       }
-       function quitAdmin(){
-    	   $.ajax({
-    		   dataType:"json",
-    		   url:"quitAdminInfo.do",
-    		   type:"POST",
-    		   success:function(data){
-    			   var result = data.result;
-    			   if(result==true){
-    				   toastr.success('退出成功');
-    				   setTimeout("window.location.href ='login.jsp'",1000);
-
-    			   }else{
-    				   toastr.error('退出失败');
-    			   }
-    		   }
-    	   });
-       }
+       /*登录*/
+   	function login(){
+   		var name = $('#loginModalUserNmae').val();
+   		var password = $('#loginModalUserPwd').val();
+   		$.ajax({
+   			dataType:"json",
+   			data:{
+   				"name":name,
+   				"password":password
+   			},
+   			type:"POST",
+   			url:"userLogin.do",
+   			success:function(data){
+   				var result = data.result;
+   				if(result == true){
+   					toastr.success('登录成功');
+    				   setTimeout("window.location.href ='index.jsp'",500);
+   				}else{
+   					toastr.error("登录失败");
+   				}
+   			},
+   			error:function(data){
+   				toastr.error("请求发送失败");
+   				console.log(data);
+   			}
+   		});
+   	}
+    /*验证邮箱*/
+    function yanzhengEmail(){
+   	 var email = $('#registerModalUserEmail').val();
+   	 if(email!=''){
+   		 if(checkEmail(email)==true){
+   			 
+   		 }else{
+   			 toastr.waring("邮箱格式不正确");
+   		 }
+   	 }else{
+   		 toastr.waring("邮箱必填");
+   	 }
+    }
+   	/*退出*/
+   	
+   	
+   	function quit(){
+   		if(window.confirm("退出登录，是否确认？")){
+   			$.ajax({
+   				dataType:"json",
+   				data:{},
+   				type:'POST',
+   				url:"userLoginOut.do",
+   				success:function(data){
+   					var result =  data.result;
+   					if(result == true){
+   						toastr.success('退出成功');
+   	 				   setTimeout("window.location.href ='index.jsp'",500);
+   					}else{
+   						toastr.error("退出失败");
+   					}
+   				},
+   				error:function(date){
+   					console.log(data);
+   				}
+   			});
+   		}
+   	}
+   	
+   	
+   	function update(){
+   		var updateModalUserNmae = $('#registerModalUserNmae').val();
+   		var updateModalUserCn = $('#updateModalUserCn').val();
+   		var updateModalUserPwd3 = $('#registerModalUserPwd3').val();
+   		var updateModalUserId = $('#updateModalUserId').val();
+   		var updateModalUserEmail = $('#registerModalUserEmail').val();
+   		$.ajax({
+				dataType:"json",
+				data:{
+					"id":updateModalUserId,
+					"name":registerModalUserNmae,
+					"cn":updateModalUserCn,
+					"password":registerModalUserPwd2,
+					"email":registerModalUserEmail
+				},
+				type:'POST',
+				url:"userUpdate.do",
+				success:function(data){
+					var result =  data.result;
+					if(result == true){
+						toastr.success('修改成功,正在注销');
+						quit();
+					}else{
+						toastr.error("修改失败");
+					}
+				},
+				error:function(date){
+					console.log(data);
+				}
+   		});
+   	}
+   	function register(){
+   		var registerModalUserNmae = $('#registerModalUserNmae').val();
+   		var registerModalUserCn = $('#registerModalUserCn').val();
+   		var registerModalUserPwd1 = $('#registerModalUserPwd1').val();
+   		var registerModalUserPwd2 = $('#registerModalUserPwd2').val();
+   		var registerModalUserEmail = $('#registerModalUserEmail').val();	
+   		if(registerModalUserPwd1==registerModalUserPwd2){
+   			$.ajax({
+   				dataType:"json",
+   				data:{
+   					"name":registerModalUserNmae,
+   					"cn":registerModalUserCn,
+   					"password":registerModalUserPwd2,
+   					"email":registerModalUserEmail
+   				},
+   				type:'POST',
+   				url:"userInsert.do",
+   				success:function(data){
+   					var result =  data.result;
+   					if(result == true){
+   						toastr.success('注册成功');
+   	 				   
+   					}else{
+   						toastr.error("注册失败");
+   					}
+   				},
+   				error:function(date){
+   					console.log(data);
+   				}
+   			});
+   		}
+   	}
