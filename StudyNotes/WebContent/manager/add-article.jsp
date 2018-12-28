@@ -1,3 +1,7 @@
+<%@ page language="java" contentType="text/html; charset=utf-8"
+    pageEncoding="utf-8"%>
+       <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+    <%@page import="com.common.bean.AdminInfo" %>
 <!doctype html>
 <html lang="zh-CN">
 <head>
@@ -22,7 +26,15 @@
   <script>window.location.href='upgrade-browser.html';</script>
 <![endif]-->
 </head>
-
+<%
+	AdminInfo adminLoginIng;
+	adminLoginIng = (AdminInfo)request.getSession().getAttribute("adminLoginIng");
+	if(adminLoginIng==null){
+		adminLoginIng = new AdminInfo();
+		adminLoginIng.setAdmin_id(-1);
+		response.sendRedirect("login.jsp");
+	}
+%>
 <body class="user-select">
 <section class="container-fluid">
   <header>
@@ -60,7 +72,7 @@
         <li><a href="index.jsp">报告</a></li>
       </ul>
       <ul class="nav nav-sidebar">
-        <li class="active"><a href="article.html">文章</a></li>
+        <li class="active"><a href="article.jsp">文章</a></li>
         <li><a href="notice.html">公告</a></li>
         <li><a href="comment.html">评论</a></li>
         <li><a data-toggle="tooltip" data-placement="top" title="网站暂无留言功能">留言</a></li>
@@ -251,37 +263,37 @@
         <h4 class="modal-title" >登录记录</h4>
       </div>
       <div class="modal-body">
-        <table class="table" style="margin-bottom:0px;">
-          <thead>
-            <tr>
-              <th>登录IP</th>
-              <th>登录时间</th>
-              <th>状态</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <td>::1:55570</td>
-              <td>2016-01-08 15:50:28</td>
-              <td>成功</td>
-            </tr>
-            <tr>
-              <td>::1:64377</td>
-              <td>2016-01-08 10:27:44</td>
-              <td>成功</td>
-            </tr>
-            <tr>
-              <td>::1:64027</td>
-              <td>2016-01-08 10:19:25</td>
-              <td>成功</td>
-            </tr>
-            <tr>
-              <td>::1:57081</td>
-              <td>2016-01-06 10:35:12</td>
-              <td>成功</td>
-            </tr>
-          </tbody>
-        </table>
+          <table class="table" style="margin-bottom:0px;">
+            <thead>
+              <tr>
+                <th>登录IP</th>
+                <th>登录时间</th>
+                <th>状态</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>::1:55570</td>
+                <td>2016-01-08 15:50:28</td>
+                <td>成功</td>
+              </tr>
+              <tr>
+                <td>::1:64377</td>
+                <td>2016-01-08 10:27:44</td>
+                <td>成功</td>
+              </tr>
+              <tr>
+                <td>::1:64027</td>
+                <td>2016-01-08 10:19:25</td>
+                <td>成功</td>
+              </tr>
+              <tr>
+                <td>::1:57081</td>
+                <td>2016-01-06 10:35:12</td>
+                <td>成功</td>
+              </tr>
+            </tbody>
+          </table>
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-default" data-dismiss="modal">朕已阅</button>
@@ -322,12 +334,19 @@
 <div id="rightClickMenu">
   <ul class="list-group rightClickMenuList">
     <li class="list-group-item disabled">欢迎访问个人学习笔记</li>
-    <li class="list-group-item"><span>IP：</span>172.16.10.129</li>
-    <li class="list-group-item"><span>地址：</span>河南省郑州市</li>
+    <li class="list-group-item"><span>IP：</span><span id="admin_Login_ip"></span></li>
+    <li class="list-group-item"><span>地址：</span>河北省石家庄市</li>
     <li class="list-group-item"><span>系统：</span>Windows10 </li>
-    <li class="list-group-item"><span>浏览器：</span>Chrome47</li>
+    <li class="list-group-item"><span>浏览器：</span><span id="liulanqi"></span><span id="liulanqi"></span></li>
   </ul>
 </div>
+<script src="js/bootstrap.min.js"></script> 
+<script src="js/admin-scripts.js"></script>
+</body>
+<script src="js/common.js"></script>
+<script>	
+getLiuLanQi();
+</script>
 <script src="js/bootstrap.min.js"></script> 
 <script src="js/admin-scripts.js"></script>
 <script src="lib/ueditor/ueditor.config.js"></script> 

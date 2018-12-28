@@ -21,7 +21,7 @@ public class UserService {
 	public User login(User user) {
 		return userDao.login(user);
 	}
-	public Integer insert(User user) {
+	public boolean insert(User user) {
 		return userDao.insert(user);
 	}
 	public boolean update(User user) {

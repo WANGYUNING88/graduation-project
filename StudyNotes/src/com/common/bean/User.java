@@ -25,23 +25,8 @@ public class User {
 	private String user_password;
 	@Column(name="user_email")
 	private String user_email;
-	@Column(name="user_telephone")
-	private String user_telephone;
-	@Column(name="user_address")
-	private String user_address;
-	@Column(name="user_posttime")
-	private Date user_posttime;
-	@OneToMany(mappedBy="user", targetEntity=Orders.class, 
-	        cascade=CascadeType.ALL)
-	private Set<Orders> orderSet = new HashSet<Orders>();
-	
-	
-	public Set<Orders> getOrderSet() {
-		return orderSet;
-	}
-	public void setOrderSet(Set<Orders> orderSet) {
-		this.orderSet = orderSet;
-	}
+	@Column(name="user_cn")
+	private String user_cn;
 	public Integer getUser_id() {
 		return user_id;
 	}
@@ -66,24 +51,16 @@ public class User {
 	public void setUser_email(String user_email) {
 		this.user_email = user_email;
 	}
-	public String getUser_telephone() {
-		return user_telephone;
+	public String getUser_cn() {
+		return user_cn;
 	}
-	public void setUser_telephone(String user_telephone) {
-		this.user_telephone = user_telephone;
+	public void setUser_cn(String user_cn) {
+		this.user_cn = user_cn;
 	}
-	public String getUser_address() {
-		return user_address;
-	}
-	public void setUser_address(String user_address) {
-		this.user_address = user_address;
-	}
-	public Date getUser_posttime() {
-		return user_posttime;
-	}
-	public void setUser_posttime(Date user_posttime) {
-		this.user_posttime = user_posttime;
-	}
+	
+	
+	
+	
 	
 	
 }

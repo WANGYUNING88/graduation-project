@@ -2,12 +2,14 @@ package com.studynotes.manager.dao;
 
 import java.util.List;
 
+import org.apache.commons.mail.Email;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.query.Query;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
+import com.common.bean.EmailInfo;
 import com.common.bean.User;
 @Repository
 public class UserDao {
@@ -35,14 +37,20 @@ public class UserDao {
 	    User usered = (User)query.uniqueResult();
 	    return usered;
 	}
+	
 	/*
 	 * 注册
 	 */
-	public Integer insert(User user) {
+	public boolean insert(User user) {
 		Session session = sessionFactory.getCurrentSession();
-		session.save(user);
-		int result = user.getUser_id();
-		return result;
+		try {
+			session.save(user);
+			return true;
+		} catch (Exception e) {
+			// TODO: handle exception
+			return false;
+		}
+
 	}
 	/*
 	 * 修改信息
@@ -53,11 +61,15 @@ public class UserDao {
 		usered.setUser_name(user.getUser_name());
 		usered.setUser_password(user.getUser_password());
 		usered.setUser_email(user.getUser_email());
-		usered.setUser_telephone(user.getUser_telephone());
-		usered.setUser_posttime(user.getUser_posttime());
-		usered.setUser_address(user.getUser_address());
-		session.update(usered);
-		return true;
+		usered.setUser_cn(user.getUser_cn());
+		try {
+			session.update(usered);
+			return true;
+		} catch (Exception e) {
+			// TODO: handle exception
+			return false;
+		}
+		
 	}
 	/*
 	 * 销户
@@ -73,6 +85,41 @@ public class UserDao {
 			return false;
 		}
 	}
+	/*
+	 * 邮箱查询
+	 * @address
+	 */
+	public EmailInfo selectEmailByAddress(EmailInfo email) {
+		Session session = sessionFactory.getCurrentSession();
+		String hql = "from Email where email_address=?";
+		Query query = session.createQuery(hql);
+	    query.setParameter(0, email.getEmail_address());
+	    EmailInfo e = (EmailInfo) query.uniqueResult();
+	    return e;
+	}
+	/*
+	 * 邮箱查询
+	 * @address state
+	 */
+	public EmailInfo selectEmailByAddressAndState(EmailInfo email) {
+		Session session = sessionFactory.getCurrentSession();
+		String hql = "from Email where email_address=? and email_state='Y";
+		Query query = session.createQuery(hql);
+	    query.setParameter(0, email.getEmail_address());
+	    EmailInfo e = (EmailInfo) query.uniqueResult();
+	    return e;
+	}
+//	/*
+//	 * 插入
+//	 */
+//	public EmailInfo selectEmailByAddressAndState(EmailInfo email) {
+//		Session session = sessionFactory.getCurrentSession();
+//		String hql = "from Email where email_address=? and email_state='Y";
+//		Query query = session.createQuery(hql);
+//	    query.setParameter(0, email.getEmail_address());
+//	    EmailInfo e = (EmailInfo) query.uniqueResult();
+//	    return e;
+//	}
 	/*
 	 * 分页显示
 	 * 检索全部USER

@@ -68,7 +68,7 @@
       </div>
       <div class="collapse navbar-collapse" id="header-navbar">
         <ul class="nav navbar-nav navbar-right">
-          <li class="hidden-index active"><a data-cont="个人学习笔记首页" href="index.html">个人学习笔记首页</a></li>
+          <li class="hidden-index active"><a data-cont="个人学习笔记首页" href="index.jsp">个人学习笔记首页</a></li>
           <li><a href="category.html">前端技术</a></li>
           <li><a href="category.html">后端程序</a></li>
           <li><a href="category.html">管理系统</a></li>
@@ -119,49 +119,49 @@
         <h3>最新发布</h3>
         <div class="more"><a href="">PHP</a><a href="">JavaScript</a><a href="">EmpireCMS</a><a href="">Apache</a><a href="">MySQL</a></div>
       </div>
-      <article class="excerpt excerpt-1"><a class="focus" href="article.html" title=""><img class="thumb" data-original="images/excerpt.jpg" src="images/excerpt.jpg" alt=""></a>
+      <article class="excerpt excerpt-1"><a class="focus" href="article.jsp" title=""><img class="thumb" data-original="images/excerpt.jpg" src="images/excerpt.jpg" alt=""></a>
         <header><a class="cat" href="program">后端程序<i></i></a>
-          <h2><a href="article.html" title="">php如何判断一个日期的格式是否正确</a></h2>
+          <h2><a href="article.jsp" title="">php如何判断一个日期的格式是否正确</a></h2>
         </header>
         <p class="meta">
           <time class="time"><i class="glyphicon glyphicon-time"></i> 2016-1-4 10:29:39</time>
-          <span class="views"><i class="glyphicon glyphicon-eye-open"></i> 共120人围观</span> <a class="comment" href="article.html#comment"><i class="glyphicon glyphicon-comment"></i> 0个不明物体</a></p>
+          <span class="views"><i class="glyphicon glyphicon-eye-open"></i> 共120人围观</span> <a class="comment" href="article.jsp#comment"><i class="glyphicon glyphicon-comment"></i> 0个不明物体</a></p>
         <p class="note">可以用strtotime()把日期（$date）转成时间戳，再用date()按需要验证的格式转成一个日期，来跟$date比较是否相同来验证这个日期的格式是否是正确的。所以要验证日期格式 ... </p>
       </article>
-      <article class="excerpt excerpt-2"><a class="focus" href="article.html" title=""><img class="thumb" data-original="images/excerpt.jpg" src="images/excerpt.jpg" alt=""></a>
+      <article class="excerpt excerpt-2"><a class="focus" href="article.jsp" title=""><img class="thumb" data-original="images/excerpt.jpg" src="images/excerpt.jpg" alt=""></a>
         <header><a class="cat" href="program">后端程序<i></i></a>
-          <h2><a href="article.html" title="">php如何判断一个日期的格式是否正确</a></h2>
+          <h2><a href="article.jsp" title="">php如何判断一个日期的格式是否正确</a></h2>
         </header>
         <p class="meta">
           <time class="time"><i class="glyphicon glyphicon-time"></i> 2016-1-4 10:29:39</time>
-          <span class="views"><i class="glyphicon glyphicon-eye-open"></i> 共120人围观</span> <a class="comment" href="article.html#comment"><i class="glyphicon glyphicon-comment"></i> 0个不明物体</a></p>
+          <span class="views"><i class="glyphicon glyphicon-eye-open"></i> 共120人围观</span> <a class="comment" href="article.jsp#comment"><i class="glyphicon glyphicon-comment"></i> 0个不明物体</a></p>
         <p class="note">可以用strtotime()把日期（$date）转成时间戳，再用date()按需要验证的格式转成一个日期，来跟$date比较是否相同来验证这个日期的格式是否是正确的。所以要验证日期格式 ... </p>
       </article>
-      <article class="excerpt excerpt-3"><a class="focus" href="article.html" title=""><img class="thumb" data-original="images/excerpt.jpg" src="images/excerpt.jpg" alt=""></a>
+      <article class="excerpt excerpt-3"><a class="focus" href="article.jsp" title=""><img class="thumb" data-original="images/excerpt.jpg" src="images/excerpt.jpg" alt=""></a>
         <header><a class="cat" href="program">后端程序<i></i></a>
-          <h2><a href="article.html" title="">php如何判断一个日期的格式是否正确</a></h2>
+          <h2><a href="article.jsp" title="">php如何判断一个日期的格式是否正确</a></h2>
         </header>
         <p class="meta">
           <time class="time"><i class="glyphicon glyphicon-time"></i> 2016-1-4 10:29:39</time>
-          <span class="views"><i class="glyphicon glyphicon-eye-open"></i> 共120人围观</span> <a class="comment" href="article.html#comment"><i class="glyphicon glyphicon-comment"></i> 0个不明物体</a></p>
+          <span class="views"><i class="glyphicon glyphicon-eye-open"></i> 共120人围观</span> <a class="comment" href="article.jsp#comment"><i class="glyphicon glyphicon-comment"></i> 0个不明物体</a></p>
         <p class="note">可以用strtotime()把日期（$date）转成时间戳，再用date()按需要验证的格式转成一个日期，来跟$date比较是否相同来验证这个日期的格式是否是正确的。所以要验证日期格式 ... </p>
       </article>
-      <article class="excerpt excerpt-4"><a class="focus" href="article.html" title=""><img class="thumb" data-original="images/excerpt.jpg" src="images/excerpt.jpg" alt=""></a>
+      <article class="excerpt excerpt-4"><a class="focus" href="article.jsp" title=""><img class="thumb" data-original="images/excerpt.jpg" src="images/excerpt.jpg" alt=""></a>
         <header><a class="cat" href="program">后端程序<i></i></a>
-          <h2><a href="article.html" title="">php如何判断一个日期的格式是否正确</a></h2>
+          <h2><a href="article.jsp" title="">php如何判断一个日期的格式是否正确</a></h2>
         </header>
         <p class="meta">
           <time class="time"><i class="glyphicon glyphicon-time"></i> 2016-1-4 10:29:39</time>
-          <span class="views"><i class="glyphicon glyphicon-eye-open"></i> 共120人围观</span> <a class="comment" href="article.html#comment"><i class="glyphicon glyphicon-comment"></i> 0个不明物体</a></p>
+          <span class="views"><i class="glyphicon glyphicon-eye-open"></i> 共120人围观</span> <a class="comment" href="article.jsp#comment"><i class="glyphicon glyphicon-comment"></i> 0个不明物体</a></p>
         <p class="note">可以用strtotime()把日期（$date）转成时间戳，再用date()按需要验证的格式转成一个日期，来跟$date比较是否相同来验证这个日期的格式是否是正确的。所以要验证日期格式 ... </p>
       </article>
-      <article class="excerpt excerpt-5"><a class="focus" href="article.html" title=""><img class="thumb" data-original="images/excerpt.jpg" src="images/excerpt.jpg" alt=""></a>
+      <article class="excerpt excerpt-5"><a class="focus" href="article.jsp" title=""><img class="thumb" data-original="images/excerpt.jpg" src="images/excerpt.jpg" alt=""></a>
         <header><a class="cat" href="program">后端程序<i></i></a>
-          <h2><a href="article.html" title="">php如何判断一个日期的格式是否正确</a></h2>
+          <h2><a href="article.jsp" title="">php如何判断一个日期的格式是否正确</a></h2>
         </header>
         <p class="meta">
           <time class="time"><i class="glyphicon glyphicon-time"></i> 2016-1-4 10:29:39</time>
-          <span class="views"><i class="glyphicon glyphicon-eye-open"></i> 共120人围观</span> <a class="comment" href="article.html#comment"><i class="glyphicon glyphicon-comment"></i> 0个不明物体</a></p>
+          <span class="views"><i class="glyphicon glyphicon-eye-open"></i> 共120人围观</span> <a class="comment" href="article.jsp#comment"><i class="glyphicon glyphicon-comment"></i> 0个不明物体</a></p>
         <p class="note">可以用strtotime()把日期（$date）转成时间戳，再用date()按需要验证的格式转成一个日期，来跟$date比较是否相同来验证这个日期的格式是否是正确的。所以要验证日期格式 ... </p>
       </article>
       <nav class="pagination" style="display: none;">

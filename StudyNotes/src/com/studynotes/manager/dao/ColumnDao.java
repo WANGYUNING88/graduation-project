@@ -104,7 +104,7 @@ public class ColumnDao {
 	 */
 	public List<ColumnInfo> selectAllColumnInfoByPage(int page, int record){
 		Session session = sessionFactory.getCurrentSession();
-		String hql = "from ColumnInfo order by column_id";
+		String hql = "from ColumnInfo order by column_id asc";
 		Query query = session.createQuery(hql);
 		query.setFirstResult((page-1)*record);
 		query.setMaxResults( record);
