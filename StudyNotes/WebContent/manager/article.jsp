@@ -121,7 +121,8 @@
         <ol class="breadcrumb">
           <li><a href="add-article.jsp">增加文章</a></li>
         </ol>
-        <h1 class="page-header">管理 <span class="badge">7</span></h1>
+        <h1 class="page-header">管理 <span class="badge"></span></h1><input type="button" class="btn btn-primary" id= "qiehuan" onClick="qieHuan1()" value="切换"/>
+        <font id = "tishi" size ="-2" color = "gray"></font>
         <div class="table-responsive">
           <table class="table table-striped table-hover">
             <thead>
@@ -293,67 +294,6 @@
     </div>
   </div>
 </div>
-<!-- 修改栏目 -->
-<div class="modal fade" id="update-category" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
-  <div class="modal-dialog" role="document">
-    <div class="modal-content">
-      <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-	 <h4 class="modal-title" >修改栏目</h4>
- </div>
-        <div class="modal-body">
-          <table class="table" style="margin-bottom:0px;">
-            <thead>
-              <tr> </tr>
-            </thead>
-             <tbody>
-             <tr id="tr1" style="display:none"><td><input type='text' id = 'id1' /></td></tr>
-       		<tr>
-                <td rowspan='2'  wdith="20%">栏目名称:</td>
-                <td width="80%"><input type="text" id="name1" name="name"  class="form-control" placeholder="在此处输入栏目名称" required autocomplete="off" maxlength="10"  /></td>
-				
-              </tr>
-			  <tr><td colspan='1'><span class="prompt-text">这将是它在站点上显示的名字。</span></td></tr>
-              <tr>
-                <td  rowspan='2' wdith="20%">栏目别名:</td>
-                <td width="80%"><input id="alias1" name="alias"  class="form-control" placeholder="在此处输入栏目别名"  maxlength="10" autocomplete="off" /></td>
-				
-              </tr>
-			  <tr><td> <span class="prompt-text">“别名”是在URL中使用的别称，它可以令URL更美观。通常使用小写，只能包含字母，数字和连字符（-）。</span> </td></tr>
-
-              <tr>
-                <td rowspan='2' wdith="20%">父节点:</td>
-                <td width="80%"><select id="fid1" class="form-control" name="fid">
-									<option value="0" >无</option></select></td>	
-								
-				
-              </tr>
-			  <tr><td><span class="prompt-text">栏目是有层级关系的，您可以有一个“音乐”分类目录，在这个目录下可以有叫做“流行”和“古典”的子目录。</span></td></tr>
-              <tr>
-                <td rowspan='2' wdith="20%">关键字:</td>
-                <td width="80%"><input type="text" id="keywords1" name="keywords" class="form-control" placeholder="在此处输入栏目关键字" maxlength="18" autocomplete="off" /></td>
-             
-			  </tr>
-			   <tr><td><span class="prompt-text">关键字会出现在网页的keywords属性中。</span><td></tr>
-              <tr>
-                <td rowspan='2' wdith="20%">描述:</td>
-                <td width="80%"> <textarea class="form-control" id="describe1" maxlength="18" name="describe" rows="4" autocomplete="off"></textarea></td >
-				
-              </tr>
-              <tr><td><span class="prompt-text">描述会出现在网页的description属性中。</span></td></tr>
-            </tbody>
-            <tfoot>
-              <tr></tr>
-            </tfoot>
-          </table>
-        </div>
-        <div class="modal-footer">
-          <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
-          <button type="submit" class="btn btn-primary" onClick='updateColumn()'>更新</button>
-        </div>
-      </div>
-    </div>
-  </div>
 <!--右键菜单列表-->
 <div id="rightClickMenu">
   <ul class="list-group rightClickMenuList">
@@ -369,11 +309,26 @@
 <script>
 var PAGES =1;
 var pageMax = 1;
-selectAllArticleByPage(2,PAGES);
 getPageNum();
+
+
 yanZheng();
+
 var level = '${sessionScope.adminLoginIng.admin_level}';
+var flag = true;
+if(level==1){
+	flag = true;
+	selectAllArticleByPage(2,PAGES);
+	$('#tishi').html("这是全部用户的文章。");
+}else{
+	flag = false;
+	selectUserArticleByPage(2,PAGES);
+	$('#tishi').html("这是当前用户的文章。");
+}
 console.log(level);
+
+
+
 if(level == 1){
 	$("#level1").prop("checked",true);
 	$("#level2").prop("checked",false);
@@ -414,8 +369,24 @@ $(function(){
 	});   
 });
 
-
-
+/*
+ * 切换
+ */
+function qieHuan1(){
+	if(level==2){
+		toastr.waring("权限不够！");
+	}else{
+		if(flag==true){
+			flag = false;
+			selectUserArticleByPage(2,PAGES);
+			$('#tishi').html("这是当前用户的文章。");
+		}else{
+			flag = true;
+			selectAllArticleByPage(2,PAGES);
+			$('#tishi').html("这是全部用户的文章。");
+		}
+	}
+}
 /*
  * 查询全部
  设置页数
@@ -502,31 +473,96 @@ function selectAllArticleByPage(type,page){
 		    url: "selectAllArticleByPage.do", 
 		    dataType: "json",
 		    data:{"page":PAGES},
-		    success:function(data){	
+  success:function(data){	
+		    	
 		  		var list = data.result;
 		  		var str = "";
 		  		$('#tbody').html(str);
-		  	  for (i in list) {
-		  		
-		  	
-		  		  
+		  	  for (var i in list) {
+
 		          str += "<tr>" +
-		              "<td>  <input type='checkbox' class='input-control' name='checkbox[]' value='" + list[i].article__id + "' /></td>" +
-		              "<td class='article-title'>" + list[i].article_title+ "</td>" +
-		              "<td >" + list[i].column_name + "</td>" +
-		              "<td class='hidden-sm'>" + list[i].article_label + "</td>" +
+		              "<td>  <input type='checkbox' class='input-control' name='checkbox[]' value='" + list[i][0] + "' /></td>" +
+		              "<td class='article-title'>" + list[i][1]+ "</td>" +
+		              "<td >" + list[i][8] + "</td>" +
+		              "<td class='hidden-sm'>" + list[i][6] + "</td>" +
 		              "<td class='hidden-sm'>"+0+"</td>"+
-		              "<td>"+ list[i].article_time + "</td>"+
+		              "<td>"+ list[i][3] + "</td>"+
 		              "<td id='td'><a href='update-article.jsp?article_id="
-		              +list[i].article_id+
-		            		  "' >修改</a> <a id='a' rel='"+ 
-		            				  list[i].article_id +"'>删除</a></td>"+
+		              + list[i][0] +
+		            		  "' >修改</a> <a id='a' rel='"+
+		            		  list[i][0] +"'>删除</a></td>"+
 		    
 		              "</tr>";
 		      }
 		  	  $('#tbody').html(str);
-		  	getPageNum();
-		  	console.log(data);
+		  	 Console.log("hehe   "+list);
+		  	  getPageNum();
+		  	  
+		             
+		    },
+		    error:function(xhr,state,errorThrown){
+						//requesFail(xhr);
+		   	 console.log(xhr);
+			}
+			
+		
+		  
+		});
+	}else{
+		console.log("meiyouPage");
+	}
+};
+function selectUserArticleByPage(type,page){
+	if(type==1){
+		if(page!=1)
+		PAGES = page-1;
+	}
+	else if(type==2){
+		PAGES = page;
+	}else if(type==3){
+		if(PAGES!=pageMax)
+		PAGES = page+1;
+	}
+	if(PAGES>pageMax){
+		PAGES=pageMax;
+	}
+	if(page!=null&&page!=''){
+		
+		var id = '${sessionScope.adminLoginIng.admin_id}';
+		console.log("damin_id "+id)
+		$.ajax({
+		    type: "POST",
+		    url: "selectUserArticleByPage.do", 
+		    dataType: "json",
+		    data:{
+		    	"page":PAGES,
+		    	"user_id":id	
+		    },
+		    success:function(data){	
+		    	
+		  		var list = data.result;
+		  		var str = "";
+		  		$('#tbody').html(str);
+		  	  for (var i in list) {
+
+		          str += "<tr>" +
+		              "<td>  <input type='checkbox' class='input-control' name='checkbox[]' value='" + list[i][0] + "' /></td>" +
+		              "<td class='article-title'>" + list[i][1]+ "</td>" +
+		              "<td >" + list[i][8] + "</td>" +
+		              "<td class='hidden-sm'>" + list[i][6] + "</td>" +
+		              "<td class='hidden-sm'>"+0+"</td>"+
+		              "<td>"+ list[i][3] + "</td>"+
+		              "<td id='td'><a href='update-article.jsp?article_id="
+		              + list[i][0] +
+		            		  "' >修改</a> <a id='a' rel='"+
+		            		  list[i][0] +"'>删除</a></td>"+
+		    
+		              "</tr>";
+		      }
+		  	  $('#tbody').html(str);
+		  	 Console.log("hehe   "+list);
+		  	  getPageNum();
+		  	  
 		             
 		    },
 		    error:function(xhr,state,errorThrown){

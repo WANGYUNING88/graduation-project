@@ -105,10 +105,10 @@ public class ArticleAction {
 	@ResponseBody 
 	public void selectAllArticleByPage(HttpServletRequest request,HttpSession session,HttpServletResponse response) {
 		response.setCharacterEncoding("UTF-8");
-		List<Article> list = new ArrayList<>();
+		List list = new ArrayList<>();
 		String pageStr = request.getParameter("page");
 		int page = Integer.parseInt(pageStr);
-		list = articleService.selectArticleByPage(page, CommonUtil.RECORD);
+		list = articleService.selectArticleByPage(page, CommonUtil.RECORD,0);
 		System.out.println(list.size());
 		JSONObject json = new JSONObject();
 		json.put("result", list);
@@ -121,7 +121,31 @@ public class ArticleAction {
 		}
 	}
 	
-	
+	/*
+	 * 查询全部
+	 */
+		@RequestMapping("/selectUserArticleByPage")
+		@ResponseBody 
+		public void selectUserArticleByPage(HttpServletRequest request,HttpSession session,HttpServletResponse response) {
+			response.setCharacterEncoding("UTF-8");
+			List<String[]> list = new ArrayList<>();
+			String pageStr = request.getParameter("page");
+			int page = Integer.parseInt(pageStr);
+			String user_id = request.getParameter("user_id");
+			int id = Integer.parseInt(pageStr);
+			list = articleService.selectArticleByPage(page, CommonUtil.RECORD,id);
+			System.out.println(list.size());
+			JSONObject json = new JSONObject();
+			json.put("result", list);
+			try {
+				PrintWriter pw = response.getWriter();
+				pw.write(json.toJSONString());
+				System.out.println(json.toJSONString());
+			} catch (IOException e) {	
+				e.printStackTrace();
+			}
+		}
+		
 	/*
 	 * 查询全部
 	 */

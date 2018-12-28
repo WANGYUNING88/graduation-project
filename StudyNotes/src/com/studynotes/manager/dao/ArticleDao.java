@@ -30,13 +30,22 @@ public class ArticleDao {
 		List<Article> list = query.list();
 		return list;
 	}
-	public List<Article> selectArticleByPage(int page, int record){
+	public List<String[]> selectArticleByPage(int page, int record,int user_id){
 		Session session = sessionFactory.getCurrentSession();
-		String hql = "select a.* ,column_name  from Article a order by article_id asc";
-		Query query = session.createQuery(hql);
+		String sql = "SELECT a.*,b.column_name  from article a ,column_info b ,column_article_relation c " + 
+				"where a.article_id = c.ca_article_id and b.column_id = c.ca_column_id " ;
+				if(user_id!=0) {
+					sql+="and a.user_id = ?";
+				}
+				sql+="ORDER BY a.article_id asc";
+		Query query = session.createSQLQuery(sql);
 		query.setFirstResult((page-1)*record);
 		query.setMaxResults( record);
-		List<Article> list = query.list();
+		if(user_id!=0) {
+			query.setParameter(0, user_id);
+		}
+		
+		List<String[]> list = query.list();
 		return list;
 	}
 	public boolean insertArticle(Article article) {

@@ -26,9 +26,9 @@ public class ArticleSerivce {
 		
 		return articleDao.selectAllArticle();
 	}
-	public List<Article> selectArticleByPage(int page, int record){
+	public List<String[]> selectArticleByPage(int page, int record,int id){
 		
-		return articleDao.selectArticleByPage(page, record);
+		return articleDao.selectArticleByPage(page, record,id);
 	}
 	public boolean insertArticle(Article article) {		
 			return articleDao.insertArticle(article);	
