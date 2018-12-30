@@ -1,10 +1,17 @@
 package com.studynotes.manager.action;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.OutputStream;
 import java.io.PrintWriter;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
+import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
@@ -13,10 +20,14 @@ import com.common.bean.Article;
 import com.common.util.CommonUtil;
 import com.studynotes.manager.service.ArticleSerivce;
 
+import org.apache.commons.io.FilenameUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.multipart.MultipartFile;
 
 
 
@@ -26,6 +37,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 public class ArticleAction {
 	@Autowired
 	private ArticleSerivce articleService;
+	
 //	/*
 //	 * 插入栏目
 //	 */
@@ -175,48 +187,81 @@ public class ArticleAction {
 				e.printStackTrace();
 			}
 		}
-//		/*
-//		 * 删除栏目
-//		 */
-//			@RequestMapping("/deleteColumn")
-//			@ResponseBody 
-//			public void deleteColumn(HttpServletRequest request,HttpSession session,HttpServletResponse response) {
-//				response.setCharacterEncoding("UTF-8");
-//				boolean result = false;
-//				String column_id = request.getParameter("column_id");
-//				if(column_id!=null) {
-//					int id = Integer.parseInt(column_id);
+		/*
+		 * 上传
+		 */
+		@RequestMapping(value="/upload", method=RequestMethod.POST) 
+		public void upload( @RequestParam MultipartFile pic, HttpServletRequest request,HttpSession session,HttpServletResponse response) {
+			try {
+				ServletContext context = request.getServletContext();
+				
+				String filename = pic.getOriginalFilename();
+				System.out.println("获取的文件是："+filename);
+				
+				// 文件名使用当前时间
+				String name = new SimpleDateFormat("yyyyMMddHHmmssSSS").format(new Date());
+				// 获取上传图片的扩展名(jpg/png/...)
+				String extension = FilenameUtils.getExtension(filename);
+				String newImgName = name+"."+extension;	
+				File file = new File(CommonUtil.REALUPLOADPATH+newImgName);
+				System.out.println("服务器的文件是："+name+extension);
+				
+				byte[] bytes = pic.getBytes();
+				FileOutputStream fos = new FileOutputStream(file);
+				fos.write(bytes);
+				fos.flush();
+				fos.close();
+				// 将相对路径写回（json格式）
+				JSONObject jsonObject = new JSONObject();
+				// 将图片上传到本地
+				jsonObject.put("path", newImgName);
+				
+				// 写回
+				response.getWriter().write(jsonObject.toString());
+	 
+			} catch (Exception e) {
+				throw new RuntimeException("服务器繁忙，上传图片失败"+e);
+			}
+		}
+		/*
+		 *读取图片
+		 */
+			@RequestMapping("/showPhoto")
+			@ResponseBody 
+			public void showPhoto(HttpServletRequest request,HttpServletResponse response) {
+				try {
+					String fileName = request.getParameter("url");//图片名字
+					String path=CommonUtil.REALUPLOADPATH+fileName;
+					// 以byte流的方式打开文件 d:\1.gif
+					FileInputStream hFile;
+					hFile = new FileInputStream(path);
+					//得到文件大小
+					int i=hFile.available();
+					byte data[]=new byte[i];
+					//读数据
+					hFile.read(data);
+					response.setHeader("Content-Type","image/jpeg");
+					//得到向客户端输出二进制数据的对象
+					OutputStream toClient=response.getOutputStream();
+					//输出数据
+//					// 将相对路径写回（json格式）
+//					JSONObject jsonObject = new JSONObject();
+//					// 将图片上传到本地
+//					jsonObject.put("path",toClient );
 //					
-//					ColumnInfo columnInfo = columnService.selectColumnById(id,1);
-//					if(columnInfo!=null) {
-//						List<ColumnInfo> list = 
-//								columnService.selectColumnByColumn_father_node(columnInfo.getColumn_father_node());
-//						System.out.println("执行删除栏目获取的子类的父节点是："+columnInfo.getColumn_father_node());
-//						System.out.println("执行删除栏目获取的子类的数量是："+list.size());
-//						result = 
-//								columnService.deleteColumnByColumn_father_node(columnInfo.getColumn_father_node(), list.size());
-//						System.out.println("执行删除栏目获取的子类的结果是："+result);
-//						if(result==true) {
-//							result = columnService.deleteColumn(id);
-//							System.out.println("删除主栏目："+result);
-//						}
-//					}else {
-//						result = columnService.deleteColumn(id);
-//						System.out.println("删除主栏目："+result);
-//					}
-//					
-//				}
-//				System.out.println("执行删除栏目获取的ID是："+column_id);
-//				JSONObject json = new JSONObject();
-//				json.put("result", result);
-//				try {
-//					PrintWriter pw = response.getWriter();
-//					pw.write(json.toJSONString());
-//					System.out.println(json.toJSONString());
-//				} catch (IOException e) {	
-//					e.printStackTrace();
-//				}
-//			}
+//					// 写回
+//					response.getWriter().write(jsonObject.toString());
+					toClient.write(data);
+					toClient.flush();
+					toClient.close();
+					hFile.close();
+					
+		 
+				} catch (Exception e) {
+					throw new RuntimeException("图片读取失败！"+e);
+				}
+			}
+
 //			/*
 //			 * 
 //			 * 	获取栏目根据id、		 

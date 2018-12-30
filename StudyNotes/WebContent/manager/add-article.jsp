@@ -15,7 +15,15 @@
 <link rel="stylesheet" type="text/css" href="css/font-awesome.min.css">
 <link rel="apple-touch-icon-precomposed" href="images/icon/icon.png">
 <link rel="shortcut icon" href="images/icon/favicon.ico">
+<link href="build/toastr.min.css" rel="stylesheet" />
+<link href="build/toastr.css" rel="stylesheet" />
 <script src="js/jquery-2.1.4.min.js"></script>
+<script src="build/toastr.min.js"></script>
+<script type="text/javascript">
+
+        toastr.options.positionClass = 'toast-bottom-right';
+ </script>
+ <script type="text/javascript" language="javascript" src="js/common.js"></script>
 <!--[if gte IE 9]>
   <script src="js/jquery-1.11.1.min.js" type="text/javascript"></script>
   <script src="js/html5shiv.min.js" type="text/javascript"></script>
@@ -109,7 +117,7 @@
     </aside>
     <div class="col-sm-9 col-sm-offset-3 col-md-10 col-lg-10 col-md-offset-2 main" id="main">
       <div class="row">
-        <form action="/Article/add" method="post" class="add-article-form">
+        
           <div class="col-md-9">
             <h1 class="page-header">撰写新文章</h1>
             <div class="form-group">
@@ -130,7 +138,7 @@
             <div class="add-article-box">
               <h2 class="add-article-box-title"><span>描述</span></h2>
               <div class="add-article-box-content">
-              	<textarea class="form-control" name="describe" autocomplete="off"></textarea>
+              	<textarea  class="form-control" name="describe" autocomplete="off"></textarea>
                 <span class="prompt-text">描述是可选的手工创建的内容总结，并可以在网页描述中使用</span>
               </div>
             </div>
@@ -140,33 +148,17 @@
             <div class="add-article-box">
               <h2 class="add-article-box-title"><span>栏目</span></h2>
               <div class="add-article-box-content">
-                <ul class="category-list">
-                  <li>
-                    <label>
-                      <input name="category" type="radio" value="1" checked>
-                      这是栏目 <em class="hidden-md">( 栏目ID: <span>1</span> )</em></label>
-                  </li>
-                  <li>
-                    <label>
-                      <input name="category" type="radio" value="2">
-                      这是栏目 <em class="hidden-md">( 栏目ID: <span>2</span> )</em></label>
-                  </li>
-                  <li>
-                    <label>
-                      <input name="category" type="radio" value="3">
-                      这是栏目 <em class="hidden-md">( 栏目ID: <span>3</span> )</em></label>
-                  </li>
-                  <li>
-                    <label>
-                      <input name="category" type="radio" value="4">
-                      这是栏目 <em class="hidden-md">( 栏目ID: <span>4</span> )</em></label>
-                  </li>
-                  <li>
-                    <label>
-                      <input name="category" type="radio" value="5">
-                      这是栏目 <em class="hidden-md">( 栏目ID: <span>5</span> )</em></label>
-                  </li>
-                </ul>
+                  <ul class="category-list">
+
+                  </ul>
+
+
+                   <ul id="paginationpagenav" ></ul>
+ 
+             
+                	
+	                 	
+
               </div>
             </div>
             <div class="add-article-box">
@@ -178,25 +170,35 @@
             <div class="add-article-box">
               <h2 class="add-article-box-title"><span>标题图片</span></h2>
               <div class="add-article-box-content">
-                <input type="text" class="form-control" placeholder="点击按钮选择图片" id="pictureUpload" name="titlepic" autocomplete="off">
+             	<form id="uploadForm" enctype='multipart/form-data'>
+              	 <input id="pop_file" type="file" accept=".jpg,.jpeg,.png" v-on:change="uploadFile($event)" name="pic" ref="file" value="" />
+    			
+				</form>
+				 <input class="pop_but" type="submit" onClick="upload()" value="提交"/>
+       			
+              	<div >
+              	
+              	<img style="width: auto;  
+				    height: auto;  
+				    max-width: 100%;  
+				    max-height: 100%;     
+              	" id="img" /></div>
+              	
               </div>
-              <div class="add-article-box-footer">
-                <button class="btn btn-default" type="button" ID="upImage">选择</button>
-              </div>
+             
             </div>
             <div class="add-article-box">
               <h2 class="add-article-box-title"><span>发布</span></h2>
               <div class="add-article-box-content">
               	<p><label>状态：</label><span class="article-status-display">未发布</span></p>
                 <p><label>公开度：</label><input type="radio" name="visibility" value="0" checked/>公开 <input type="radio" name="visibility" value="1" />加密</p>
-                <p><label>发布于：</label><span class="article-time-display"><input style="border: none;" type="datetime" name="time" value="2016-01-09 17:29:37" /></span></p>
+                <p><label>发布于：</label><span class="article-time-display"><font style="border: none;" type="datetime" id="time1"  ></font></span></p>
               </div>
               <div class="add-article-box-footer">
-                <button class="btn btn-primary" type="submit" name="submit">发布</button>
+                <button class="btn btn-primary" type="submit" name="submit" onClick="addArticle()">发布</button>
               </div>
             </div>
           </div>
-        </form>
       </div>
     </div>
   </div>
@@ -354,6 +356,11 @@ getLiuLanQi();
 <script src="lib/ueditor/lang/zh-cn/zh-cn.js"></script>  
 <script id="uploadEditor" type="text/plain" style="display:none;"></script>
 <script type="text/javascript">
+var uploadPath="..//..//upload//";
+var PAGES =1;
+var pageMax = 1;
+selectAllColumnByPage(2,PAGES);
+getPageNum();
 var editor = UE.getEditor('article-content');
 window.onresize=function(){
     window.location.reload();
@@ -390,6 +397,220 @@ function upFiles() {
     var myFiles = _uploadEditor.getDialog("attachment");
     myFiles.open();
 }
+/*
+ * 查询全部
+ 设置页数
+ */
+ function getPageNum(){
+	$.ajax({
+	    type: "POST",
+	    url: "selectAllColumn.do", 
+	    dataType: "json",
+	  //  async: false, 
+	    success:function(data){	
+	  		var pageNum = data.result;
+	  		pageMax=pageNum;
+	  		var html = "";
+	  		$('.badge').html(data.columnNum);
+	  		$("#paginationpagenav").find("li").remove();
+	  		var ul=document.getElementById("paginationpagenav");
+
+	  		var objPrevious=document.createElement("li");
+	  		var objNext=document.createElement("li");
+	  		var objNow=document.createElement("li");
+	  		var objBegin=document.createElement("li");
+	  		var objEnd=document.createElement("li");
+	  		objBegin.style.display="inline-block";
+	  		objPrevious.style.display="inline-block";
+	  		objNow.style.display="inline-block";
+	  		objNext.style.display="inline-block";
+	  		objEnd.style.display="inline-block";
+	  		
+	  		objBegin.innerHTML="<a href='javascript:;' onClick='selectAllColumnByPage("+2+","+1+")' aria-label='Next'> <span aria-hidden='true'>&nbsp;首页&nbsp;</span> </a>";
+	  		objPrevious.innerHTML="<a href='javascript:;' onClick='selectAllColumnByPage("+1+","+PAGES+")' aria-label='Previous'> <span aria-hidden='true'>&nbsp;&laquo;&nbsp;</span> </a>";
+	  		objNow.innerHTML="<a href='javascript:;' >&nbsp;"+ PAGES+"&nbsp;</a>";
+	  		objNext.innerHTML="<a href='javascript:;' onClick='selectAllColumnByPage("+3+","+PAGES+")' > <span aria-hidden='true'>&nbsp;&raquo;&nbsp;</span> </a>";
+	  		objEnd.innerHTML="<a href='javascript:;' onClick='selectAllColumnByPage("+2+","+pageNum+")' > <span aria-hidden='true'>&nbsp;尾页&nbsp;</span> </a>";
+	  		ul.appendChild(objBegin);	
+	  		ul.appendChild(objPrevious);
+	  		ul.appendChild(objNow);
+	  		ul.appendChild(objNext);
+	  		ul.appendChild(objEnd);
+	  		
+	  		if(PAGES==1){
+	  			objBegin.className=("disabled");
+	  			objPrevious.className=("disabled");
+	  		}else{
+	  			objBegin.className=("");
+	  			objPrevious.className=("");
+	  		}
+			if(pageNum==PAGES){
+				objNext.className=("disabled");
+				objEnd.className=("disabled");
+			}else{
+				objNext.className=("");
+				objEnd.className=("");
+			}
+	   		console.log(data);
+	             
+	    },
+	    error:function(xhr,state,errorThrown){
+					//requesFail(xhr);
+	   	 console.log(xhr);
+		}
+		
+	
+	  
+	});
+}
+
+
+/*
+ * 分页查询(1:减一2:不变3:加一)
+ */
+function selectAllColumnByPage(type,page){
+	if(type==1){
+		if(page!=1)
+		PAGES = page-1;
+	}
+	else if(type==2){
+		PAGES = page;
+	}else if(type==3){
+		if(PAGES!=pageMax)
+		PAGES = page+1;
+	}
+	if(PAGES>pageMax){
+		PAGES=pageMax;
+	}
+	if(page!=null&&page!=''){
+
+		$.ajax({
+		    type: "POST",
+		    url: "selectAllColumnByPage.do", 
+		    dataType: "json",
+		    data:{"page":PAGES},
+		    success:function(data){	
+		  		var list = data.result;
+		  		var str = "";
+		  		$('.category-list').html(str);
+		  	  for (i in list) {
+		  		
+		  		  str+="<li>"+
+                  "<label>"+
+                  "<input name='category' type='radio' value='"
+                  +list[i].column_id+"' checked>"+
+                  list[i].column_name+" <em class='hidden-md'>( 栏目ID: <span>"+list[i].column_id+"</span> )</em></label>";
+		          
+		      }
+		  	$('.category-list').html(str);
+		  	getPageNum();
+		  	console.log(data);
+		             
+		    },
+		    error:function(xhr,state,errorThrown){
+						//requesFail(xhr);
+		   	 console.log(xhr);
+			}
+			
+		
+		  
+		});
+	}else{
+		console.log("meiyouPage");
+	}
+};
+
+function addArticle(){
+	
+}
+function time(){
+	var vWeek,vWeek_s,vDay;
+	vWeek = ["星期天","星期一","星期二","星期三","星期四","星期五","星期六"];
+	var date =  new Date();
+	year = date.getFullYear();
+	month = date.getMonth() + 1;
+	day = date.getDate();
+	hours = date.getHours();
+	minutes = date.getMinutes();
+	seconds = date.getSeconds();
+	vWeek_s = date.getDay();
+	document.getElementById("time1").innerHTML = year + "-" + month + "-" + day  + "\t" + hours + ":" + minutes +":" + seconds  ;
+	//console.log(year + "年" + month + "月" + day + "日" + "\t" + hours + ":" + minutes +":" + seconds  );
+	};
+	setInterval("time()",1000);
+	
+	 function showPhoto(a){
+	  	   if(a!=null&&a!=''){
+	  		   
+	  		 var url = "showPhoto.do?url="+a;
+	  	    var xhr = new XMLHttpRequest();
+	  	    xhr.open('POST', url, true);
+	  	    xhr.responseType = "blob";
+	  	    //xhr.setRequestHeader("client_type", "DESKTOP_WEB");
+	  	    //xhr.setRequestHeader("desktop_web_access_key", _desktop_web_access_key);
+	  	    xhr.onload = function () {
+	  	        if (this.status == 200) {
+	  	            var blob = this.response;
+	  	            var img = document.getElementById("img");
+	  	            img.onload = function (e) {
+	  	                window.URL.revokeObjectURL(img.src);
+	  	            };
+	  	            img.src = window.URL.createObjectURL(blob);
+	  	            $("#img").html(img);
+	  	        }
+	  	    }
+	  	    xhr.send();
+
+	  		   
+		    	   $.ajax({
+		    		   url:"showPhoto.do",
+		    		   data:{
+		    			   "url":a
+		    		   },
+		    		   dataType:"json",
+					   type:"POST",
+					   success:function(data){
+						   
+						   $("#img").attr("src",data);
+					   },
+					   error:function(data){
+						   console.log(data);
+					   }
+		    	   });
+	  	   }
+	     }
+
+	
+	function upload(){
+		 var oFiles = document.getElementById("pop_file").files;
+
+		 var formData = new FormData();//创建FormData对象，将所需的信息封装到内部，以键值对的方式
+
+		 formData.append("pic",oFiles[0]);//参数封装格式,可以是文件，亦可以是普通的字符串
+	
+		 if(oFiles[0]==null){
+			 toastr.warning("请选择一个图片");	
+		 }else {
+			 
+			 
+			 $.ajax({
+				
+				url:"upload.do",
+				data:formData,
+				dataType:"json",
+				type:"POST",
+				contentType: false,
+				processData: false,
+				success:function(data){
+					var img = data.path;
+					
+					showPhoto(img);
+					
+				}
+			});
+		 }
+	}
+	
 </script>
 </body>
 </html>

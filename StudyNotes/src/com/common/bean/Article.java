@@ -32,7 +32,11 @@ public class Article {
 	@Column(name="article_label")
 	private String article_label;
 	@Column(name="user_id")
-	private String user_id;
+	private Integer user_id;
+	
+	@Column(name="article_state")
+	private String article_state;
+	
 	public Integer getArticle_id() {
 		return article_id;
 	}
@@ -75,11 +79,17 @@ public class Article {
 	public void setArticle_label(String article_label) {
 		this.article_label = article_label;
 	}
-	public String getUser_id() {
+	public Integer getUser_id() {
 		return user_id;
 	}
-	public void setUser_id(String user_id) {
+	public void setUser_id(Integer user_id) {
 		this.user_id = user_id;
+	}
+	public String getArticle_state() {
+		return article_state;
+	}
+	public void setArticle_state(String article_state) {
+		this.article_state = article_state;
 	}
 	
 	

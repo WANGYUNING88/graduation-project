@@ -10,7 +10,9 @@ import org.apache.tomcat.util.codec.binary.StringUtils;
 
 public class CommonUtil {
 	public static  int  RECORD = 8; 
-	
+	public static 
+	String REALUPLOADPATH =
+	"D:\\java\\workspace\\.metadata\\.plugins\\org.eclipse.wst.server.core\\tmp0\\wtpwebapps\\upload\\";
 	/*
 	 * 	     获取当前时间
 	 */

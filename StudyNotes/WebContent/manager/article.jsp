@@ -483,7 +483,7 @@ function selectAllArticleByPage(type,page){
 		          str += "<tr>" +
 		              "<td>  <input type='checkbox' class='input-control' name='checkbox[]' value='" + list[i][0] + "' /></td>" +
 		              "<td class='article-title'>" + list[i][1]+ "</td>" +
-		              "<td >" + list[i][8] + "</td>" +
+		              "<td >" + list[i][9] + "</td>" +
 		              "<td class='hidden-sm'>" + list[i][6] + "</td>" +
 		              "<td class='hidden-sm'>"+0+"</td>"+
 		              "<td>"+ list[i][3] + "</td>"+
@@ -495,7 +495,6 @@ function selectAllArticleByPage(type,page){
 		              "</tr>";
 		      }
 		  	  $('#tbody').html(str);
-		  	 Console.log("hehe   "+list);
 		  	  getPageNum();
 		  	  
 		             

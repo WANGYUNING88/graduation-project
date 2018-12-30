@@ -35,7 +35,7 @@ public class ArticleDao {
 		String sql = "SELECT a.*,b.column_name  from article a ,column_info b ,column_article_relation c " + 
 				"where a.article_id = c.ca_article_id and b.column_id = c.ca_column_id " ;
 				if(user_id!=0) {
-					sql+="and a.user_id = ?";
+					sql+="and a.user_id = ? ";
 				}
 				sql+="ORDER BY a.article_id asc";
 		Query query = session.createSQLQuery(sql);

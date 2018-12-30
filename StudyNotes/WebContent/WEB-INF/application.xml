@@ -21,12 +21,7 @@
        	 <property name="suffix" value=".jsp"></property>
         </bean>	 
         
-         <bean id="multipartResolver"
-        class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
-		    <!-- one of the properties available; the maximum file size in bytes -->
-		    <property name="maxUploadSize" value="100000000"/>
-			
-		</bean>
+     
 		<bean id="dataSource" class="org.springframework.jdbc.datasource.DriverManagerDataSource">
 			<property name="driverClassName" value="com.mysql.jdbc.Driver"> </property>
 			<property name="url" value="jdbc:mysql://localhost:3306/db?characterEncoding=utf8"></property>
@@ -47,25 +42,20 @@
 					</props>
 				</property>
 				
-		<!--  		
-				  <property name="transactionManager" ref="transactionManager"></property>
-        <property name="transactionAttributes">
-         
-            <props>
-                <prop key="*save">PROPAGATION_REQUIRED</prop>
-                <prop key="*remove">PROPAGATION_REQUIRED</prop>
-                <prop key="*save">PROPAGATION_REQUIRED</prop>
-                <prop key="*remove">PROPAGATION_REQUIRED</prop>
-                <prop key="export">PROPAGATION_REQUIRED</prop>
-                <prop key="getAll">PROPAGATION_REQUIRED</prop>
-                <prop key="find*">PROPAGATION_REQUIRED</prop>
-                <prop key="list*">PROPAGATION_REQUIRED</prop>
-            </props>
-        </property>-->
-				
-				
-				<!--<property name="hibernate.connection.autocommit" value="true"></property>-->
+		
 		</bean>
+		
+		<bean id="multipartResolver" 
+	    class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
+	    <!-- 上传的最大限制 -->
+			<property name="maxUploadSize" value="209715200" />
+			<!-- 默认编码 -->
+			<property name="defaultEncoding" value="UTF-8" />
+			<!-- 上传文件的解析 -->
+			<property name="resolveLazily" value="true" />
+    </bean>
+		
+		
 		  <bean id="txManager" class="org.springframework.orm.hibernate5.HibernateTransactionManager">
 		    <property name="sessionFactory" ref="sessionFactory"/>
 		</bean>
