@@ -17,6 +17,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import com.alibaba.fastjson.*;
 import com.common.bean.Article;
+import com.common.bean.CaRelation;
 import com.common.util.CommonUtil;
 import com.studynotes.manager.service.ArticleSerivce;
 
@@ -38,41 +39,62 @@ public class ArticleAction {
 	@Autowired
 	private ArticleSerivce articleService;
 	
-//	/*
-//	 * 插入栏目
-//	 */
-//	
-//	@RequestMapping("/insertColumn")
-//	@ResponseBody 
-//	public void insertColumn(HttpServletRequest request,HttpSession session,HttpServletResponse response) {
-//		ColumnInfo columnInfo = new ColumnInfo();
-//		//获取参数
-//		String column_name = request.getParameter("name");
-//		String column_byname = request.getParameter("alias");
-//		String column_father_node1 = request.getParameter("fid");
-//		String column_keyword = request.getParameter("keywords");
-//		String column_describe = request.getParameter("describe");
-//		System.out.println(column_name+" "+column_name+" "+column_father_node1+" "+column_keyword+" "+column_describe);
-//		boolean result =false;
-//		if(column_father_node1!=""&&column_father_node1!=null) {
-//			int column_father_node = Integer.valueOf(column_father_node1);
-//			columnInfo.setColumn_name(column_name);
-//			columnInfo.setColumn_byname(column_byname);
-//			columnInfo.setColumn_father_node(column_father_node);
-//			columnInfo.setColumn_keyword(column_keyword);
-//			columnInfo.setColumn_describe(column_describe);
-//			 result = columnService.insertColumn(columnInfo);
-//		}
-//		JSONObject json = new JSONObject();
-//		json.put("result", result);
-//			try {
-//				PrintWriter pw = response.getWriter();
-//				pw.write(json.toJSONString());
-//			} catch (IOException e) {	
-//				e.printStackTrace();
-//			}
-//		}
-//	
+	/*
+	 * 添加文章
+	 */
+	
+	@RequestMapping("/insertArticle")
+	@ResponseBody 
+	public void insertArticle(HttpServletRequest request,HttpSession session,HttpServletResponse response) {
+		Article article = new Article();
+		//获取参数
+		String describe = request.getParameter("describe");
+		String keywords = request.getParameter("keywords");
+		String article_content = request.getParameter("article_content");
+		String article_title = request.getParameter("article_title");
+		String nowTime = request.getParameter("nowTime");
+		String column_id = request.getParameter("column_id");
+		String tags = request.getParameter("tags");
+		int columnId =0;
+		if(column_id==null) {
+			columnId = Integer.parseInt(column_id);
+		}
+		int userId =0;
+		
+		String user_id = request.getParameter("user_id");
+		if(user_id==null) {
+			userId = Integer.parseInt(user_id);		
+		}
+		String state = request.getParameter("state");
+		String imgUrl = request.getParameter("imgUrl");
+		
+		boolean result =false;
+		if(userId!=0&&columnId!=0) {
+			article.setArticle_content(article_content);
+			article.setArticle_state(state);
+			article.setArticle_img(imgUrl);
+			article.setArticle_keyword(keywords);
+			article.setArticle_time(nowTime);
+			article.setArticle_label(tags);
+			article.setArticle_title(article_title);
+			article.setUser_id(userId);	
+			int article_id =articleService.insertArticle(article);
+			CaRelation c = new CaRelation();
+			c.setCa_column_id(columnId);
+			c.setCa_article_id(article_id);
+			result = articleService.insertCaRelation(c);
+		}
+		
+		JSONObject json = new JSONObject();
+		json.put("result", result);
+			try {
+				PrintWriter pw = response.getWriter();
+				pw.write(json.toJSONString());
+			} catch (IOException e) {	
+				e.printStackTrace();
+			}
+		}
+	
 //	/*
 //	 * 修改栏目
 //	 */

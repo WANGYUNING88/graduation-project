@@ -131,14 +131,14 @@
             <div class="add-article-box">
               <h2 class="add-article-box-title"><span>关键字</span></h2>
               <div class="add-article-box-content">
-              	<input type="text" class="form-control" placeholder="请输入关键字" name="keywords" autocomplete="off">
+              	<input type="text" class="form-control" placeholder="请输入关键字" id="keywords" autocomplete="off">
                 <span class="prompt-text">多个标签请用英文逗号,隔开。</span>
               </div>
             </div>
             <div class="add-article-box">
               <h2 class="add-article-box-title"><span>描述</span></h2>
               <div class="add-article-box-content">
-              	<textarea  class="form-control" name="describe" autocomplete="off"></textarea>
+              	<textarea  class="form-control" id="describe" autocomplete="off"></textarea>
                 <span class="prompt-text">描述是可选的手工创建的内容总结，并可以在网页描述中使用</span>
               </div>
             </div>
@@ -149,22 +149,15 @@
               <h2 class="add-article-box-title"><span>栏目</span></h2>
               <div class="add-article-box-content">
                   <ul class="category-list">
-
                   </ul>
-
-
-                   <ul id="paginationpagenav" ></ul>
- 
-             
-                	
-	                 	
+                  <ul id="paginationpagenav" ></ul>
 
               </div>
             </div>
             <div class="add-article-box">
               <h2 class="add-article-box-title"><span>标签</span></h2>
               <div class="add-article-box-content">
-                <input type="text" class="form-control" placeholder="输入新标签" name="tags" autocomplete="off">
+                <input type="text" class="form-control" placeholder="输入新标签" id="tags" autocomplete="off">
                 <span class="prompt-text">多个标签请用英文逗号,隔开</span> </div>
             </div>
             <div class="add-article-box">
@@ -356,6 +349,7 @@ getLiuLanQi();
 <script src="lib/ueditor/lang/zh-cn/zh-cn.js"></script>  
 <script id="uploadEditor" type="text/plain" style="display:none;"></script>
 <script type="text/javascript">
+var imgUrl = "";
 var uploadPath="..//..//upload//";
 var PAGES =1;
 var pageMax = 1;
@@ -512,8 +506,7 @@ function selectAllColumnByPage(type,page){
 		   	 console.log(xhr);
 			}
 			
-		
-		  
+		 
 		});
 	}else{
 		console.log("meiyouPage");
@@ -521,7 +514,53 @@ function selectAllColumnByPage(type,page){
 };
 
 function addArticle(){
-	
+	var id = '${sessionScope.adminLoginIng.admin_id}';
+	console.log("admin_id "+id);
+	var column_id = $("input[name='category']:checked").val();
+	var state = $("input[name='visibility']:checked").val();
+	var nowTime =  time();
+	var  article_title  = $('#article-title').val();
+	var  article_content = '';
+	var ue = UE.getContent();
+	//对编辑器的操作最好在编辑器ready之后再做
+	ue.ready(function() {
+	   
+	    //获取html内容，返回: <p>hello</p>
+	    article_content += ue.getContent();
+	});
+	var keywords = $('#keywords').val();
+	var describe = $('#describe').val();
+	var tags = $('#tags').val();
+	$.ajax({
+	    type: "POST",
+	    url: "insertArticle.do", 
+	    dataType: "json",
+	    data:{
+	    	"describe":describe,
+	    	"keywords":keywords,
+	    	"article_content":article_content,
+	    	"article_title":article_title,
+	    	"nowTime":nowTime,
+	    	"column_id":column_id,
+	    	"tags":tags,
+	    	"user_id":id,
+	    	"state":state,
+	    	"imgUrl":imgUrl
+	    },
+	    success:function(data){	
+	    	var result - data.result;
+	    	if(result==ture){
+	    		toastr.success("添加成功","文章");
+	    	}else{
+	    		toastr.error("添加失败","文章");
+	    	}
+	    	
+	    },
+	    error:function(data){
+	    	console.log(data);
+	    	toastr.error("连接服务器失败","文章");
+	    }
+	});
 }
 function time(){
 	var vWeek,vWeek_s,vDay;
@@ -530,12 +569,12 @@ function time(){
 	year = date.getFullYear();
 	month = date.getMonth() + 1;
 	day = date.getDate();
-	hours = date.getHours();
+	hours = date.getHours(); 
 	minutes = date.getMinutes();
 	seconds = date.getSeconds();
 	vWeek_s = date.getDay();
 	document.getElementById("time1").innerHTML = year + "-" + month + "-" + day  + "\t" + hours + ":" + minutes +":" + seconds  ;
-	//console.log(year + "年" + month + "月" + day + "日" + "\t" + hours + ":" + minutes +":" + seconds  );
+	return (year + "年" + month + "月" + day + "日" + "\t" + hours + ":" + minutes +":" + seconds  );
 	};
 	setInterval("time()",1000);
 	
@@ -603,7 +642,7 @@ function time(){
 				processData: false,
 				success:function(data){
 					var img = data.path;
-					
+					imgUrl=img;
 					showPhoto(img);
 					
 				}

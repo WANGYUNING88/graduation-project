@@ -528,7 +528,7 @@ function selectUserArticleByPage(type,page){
 	if(page!=null&&page!=''){
 		
 		var id = '${sessionScope.adminLoginIng.admin_id}';
-		console.log("damin_id "+id)
+		console.log("damin_id "+id);
 		$.ajax({
 		    type: "POST",
 		    url: "selectUserArticleByPage.do", 

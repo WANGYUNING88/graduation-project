@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import com.common.bean.Article;
+import com.common.bean.CaRelation;
 
 
 @Repository
@@ -48,14 +49,14 @@ public class ArticleDao {
 		List<String[]> list = query.list();
 		return list;
 	}
-	public boolean insertArticle(Article article) {
+	public int  insertArticle(Article article) {
 		Session session = sessionFactory.getCurrentSession();
 		try {
 			session.save(article);
-			return true;
+			return article.getArticle_id();
 		} catch (Exception e) {
 			// TODO: handle exception
-			return false;
+			return 0;
 		}
 		
 		
@@ -70,6 +71,19 @@ public class ArticleDao {
 		}else {
 			return false;
 		}
+	}
+	
+	public boolean  insertCaRelation(CaRelation c) {
+		Session session = sessionFactory.getCurrentSession();
+		try {
+			session.save(c);
+			return true;
+		} catch (Exception e) {
+			// TODO: handle exception
+			return false;
+		}
+		
+		
 	}
 //	public boolean updateBook(Article book) {
 //		Session session = sessionFactory.getCurrentSession();

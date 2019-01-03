@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.common.bean.Article;
+import com.common.bean.CaRelation;
 import com.studynotes.manager.dao.ArticleDao;
 
 
@@ -30,11 +31,14 @@ public class ArticleSerivce {
 		
 		return articleDao.selectArticleByPage(page, record,id);
 	}
-	public boolean insertArticle(Article article) {		
+	public int  insertArticle(Article article) {		
 			return articleDao.insertArticle(article);	
 	}
 	public boolean deleteArticle(Integer Article_id) {
 	
 		return articleDao.deleteArticle(Article_id);
+	}
+	public boolean  insertCaRelation(CaRelation c) {
+		return articleDao.insertCaRelation(c);
 	}
 }
