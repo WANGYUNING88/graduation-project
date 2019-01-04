@@ -1,7 +1,5 @@
-<%@ page language="java" contentType="text/html; charset=utf-8"
-    pageEncoding="utf-8"%>
-       <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-    <%@page import="com.common.bean.AdminInfo" %>
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
 <!doctype html>
 <html lang="zh-CN">
 <head>
@@ -9,21 +7,13 @@
 <meta name="renderer" content="webkit">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>写文章 - 个人学习笔记管理系统</title>
+<title>文章修改 - 个人学习笔记管理系统</title>
 <link rel="stylesheet" type="text/css" href="css/bootstrap.min.css">
 <link rel="stylesheet" type="text/css" href="css/style.css">
 <link rel="stylesheet" type="text/css" href="css/font-awesome.min.css">
 <link rel="apple-touch-icon-precomposed" href="images/icon/icon.png">
 <link rel="shortcut icon" href="images/icon/favicon.ico">
-<link href="build/toastr.min.css" rel="stylesheet" />
-<link href="build/toastr.css" rel="stylesheet" />
 <script src="js/jquery-2.1.4.min.js"></script>
-<script src="build/toastr.min.js"></script>
-<script type="text/javascript">
-
-        toastr.options.positionClass = 'toast-bottom-right';
- </script>
- <script type="text/javascript" language="javascript" src="js/common.js"></script>
 <!--[if gte IE 9]>
   <script src="js/jquery-1.11.1.min.js" type="text/javascript"></script>
   <script src="js/html5shiv.min.js" type="text/javascript"></script>
@@ -34,15 +24,7 @@
   <script>window.location.href='upgrade-browser.html';</script>
 <![endif]-->
 </head>
-<%
-	AdminInfo adminLoginIng;
-	adminLoginIng = (AdminInfo)request.getSession().getAttribute("adminLoginIng");
-	if(adminLoginIng==null){
-		adminLoginIng = new AdminInfo();
-		adminLoginIng.setAdmin_id(-1);
-		response.sendRedirect("login.jsp");
-	}
-%>
+
 <body class="user-select">
 <section class="container-fluid">
   <header>
@@ -117,28 +99,28 @@
     </aside>
     <div class="col-sm-9 col-sm-offset-3 col-md-10 col-lg-10 col-md-offset-2 main" id="main">
       <div class="row">
-        
+        <form action="/Article/update" method="post" class="add-article-form">
           <div class="col-md-9">
-            <h1 class="page-header">撰写新文章</h1>
+            <h1 class="page-header">文章修改</h1>
             <div class="form-group">
               <label for="article-title" class="sr-only">标题</label>
-              <input type="text" id="article-title" name="title" class="form-control" placeholder="在此处输入标题" required autofocus autocomplete="off">
+              <input type="text" id="article-title" name="title" class="form-control" placeholder="在此处输入标题" value="这是测试的文章标题这是测试的文章标题这是测试的文章标题这是测试的文章标题" required autofocus autocomplete="off">
             </div>
             <div class="form-group">
               <label for="article-content" class="sr-only">内容</label>
-              <script id="article-content" name="content" type="text/plain"></script>
+              <script id="article-content" name="content" type="text/plain">这是测试的文章内容这是测试的文章内容这是测试的文章内容这是测试的文章内容这是测试的文章内容这是测试的文章内容这是测试的文章内容这是测试的文章内容这是测试的文章内容这是测试的文章内容这是测试的文章内容这是测试的文章内容这是测试的文章内容这是测试的文章内容这是测试的文章内容这是测试的文章内容这是测试的文章内容这是测试的文章内容这是测试的文章内容这是测试的文章内容这是测试的文章内容这是测试的文章内容这是测试的文章内容这是测试的文章内容这是测试的文章内容这是测试的文章内容这是测试的文章内容这是测试的文章内容这是测试的文章内容这是测试的文章内容这是测试的文章内容这是测试的文章内容这是测试的文章内容这是测试的文章内容这是测试的文章内容这是测试的文章内容这是测试的文章内容这是测试的文章内容这是测试的文章内容这是测试的文章内容这是测试的文章内容这是测试的文章内容这是测试的文章内容这是测试的文章内容这是测试的文章内容这是测试的文章内容这是测试的文章内容这是测试的文章内容这是测试的文章内容这是测试的文章内容.</script>
             </div>
             <div class="add-article-box">
               <h2 class="add-article-box-title"><span>关键字</span></h2>
               <div class="add-article-box-content">
-              	<input type="text" class="form-control" placeholder="请输入关键字" id="keywords" autocomplete="off">
+              	<input type="text" class="form-control" placeholder="请输入关键字" value="测试,文章" name="keywords" autocomplete="off">
                 <span class="prompt-text">多个标签请用英文逗号,隔开。</span>
               </div>
             </div>
             <div class="add-article-box">
               <h2 class="add-article-box-title"><span>描述</span></h2>
               <div class="add-article-box-content">
-              	<textarea  class="form-control" id="describe" autocomplete="off"></textarea>
+              	<textarea class="form-control" name="describe" autocomplete="off">这是测试的文章描述这是测试的文章描述这是测试的文章描述这是测试的文章描述这是测试的文章描述这是测试的文章描述这是测试的文章描述这是测试的文章描述这是测试的文章描述这是测试的文章描述这是测试的文章描述这是测试的文章描述这是测试的文章描述这是测试的文章描述</textarea>
                 <span class="prompt-text">描述是可选的手工创建的内容总结，并可以在网页描述中使用</span>
               </div>
             </div>
@@ -148,50 +130,63 @@
             <div class="add-article-box">
               <h2 class="add-article-box-title"><span>栏目</span></h2>
               <div class="add-article-box-content">
-                  <ul class="category-list">
-                  </ul>
-                  <ul id="paginationpagenav" ></ul>
-
+                <ul class="category-list">
+                  <li>
+                    <label>
+                      <input name="category" type="radio" value="1">
+                      这是栏目 <em class="hidden-md">( 栏目ID: <span>1</span> )</em></label>
+                  </li>
+                  <li>
+                    <label>
+                      <input name="category" type="radio" value="2">
+                      这是栏目 <em class="hidden-md">( 栏目ID: <span>2</span> )</em></label>
+                  </li>
+                  <li>
+                    <label>
+                      <input name="category" type="radio" value="3" checked>
+                      这是栏目 <em class="hidden-md">( 栏目ID: <span>3</span> )</em></label>
+                  </li>
+                  <li>
+                    <label>
+                      <input name="category" type="radio" value="4">
+                      这是栏目 <em class="hidden-md">( 栏目ID: <span>4</span> )</em></label>
+                  </li>
+                  <li>
+                    <label>
+                      <input name="category" type="radio" value="5">
+                      这是栏目 <em class="hidden-md">( 栏目ID: <span>5</span> )</em></label>
+                  </li>
+                </ul>
               </div>
             </div>
             <div class="add-article-box">
               <h2 class="add-article-box-title"><span>标签</span></h2>
               <div class="add-article-box-content">
-                <input type="text" class="form-control" placeholder="输入新标签" id="tags" autocomplete="off">
+                <input type="text" class="form-control" placeholder="输入新标签" value="测试,文章" name="tags" autocomplete="off">
                 <span class="prompt-text">多个标签请用英文逗号,隔开</span> </div>
             </div>
             <div class="add-article-box">
               <h2 class="add-article-box-title"><span>标题图片</span></h2>
               <div class="add-article-box-content">
-             	<form id="uploadForm" enctype='multipart/form-data'>
-              	 <input id="pop_file" type="file" accept=".jpg,.jpeg,.png" v-on:change="uploadFile($event)" name="pic" ref="file" value="" />
-    			
-				</form>
-				 <input class="pop_but" type="submit" onClick="upload()" value="提交"/>
-       			
-              	<div >
-              	
-              	<img style="width: auto;  
-				    height: auto;  
-				    max-width: 100%;  
-				    max-height: 100%;     
-              	" id="img" /></div>
-              	
+                <input type="text" class="form-control" placeholder="点击按钮选择图片" id="pictureUpload" name="titlepic" autocomplete="off">
               </div>
-             
+              <div class="add-article-box-footer">
+                <button class="btn btn-default" type="button" ID="upImage">选择</button>
+              </div>
             </div>
             <div class="add-article-box">
               <h2 class="add-article-box-title"><span>发布</span></h2>
               <div class="add-article-box-content">
-              	<p><label>状态：</label><span class="article-status-display">未发布</span></p>
+              	<p><label>状态：</label><span class="article-status-display">已发布</span></p>
                 <p><label>公开度：</label><input type="radio" name="visibility" value="0" checked/>公开 <input type="radio" name="visibility" value="1" />加密</p>
-                <p><label>发布于：</label><span class="article-time-display"><font style="border: none;" type="datetime" id="time1"  ></font></span></p>
+                <p><label>发布于：</label><span class="article-time-display"><input style="border: none;" type="datetime" name="time" value="2016-01-09 17:29:37" /></span></p>
               </div>
               <div class="add-article-box-footer">
-                <button class="btn btn-primary" type="submit" name="submit" onClick="addArticle()">发布</button>
+                <button class="btn btn-primary" type="submit" name="submit">更新</button>
               </div>
             </div>
           </div>
+        </form>
       </div>
     </div>
   </div>
@@ -258,37 +253,37 @@
         <h4 class="modal-title" >登录记录</h4>
       </div>
       <div class="modal-body">
-          <table class="table" style="margin-bottom:0px;">
-            <thead>
-              <tr>
-                <th>登录IP</th>
-                <th>登录时间</th>
-                <th>状态</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr>
-                <td>::1:55570</td>
-                <td>2016-01-08 15:50:28</td>
-                <td>成功</td>
-              </tr>
-              <tr>
-                <td>::1:64377</td>
-                <td>2016-01-08 10:27:44</td>
-                <td>成功</td>
-              </tr>
-              <tr>
-                <td>::1:64027</td>
-                <td>2016-01-08 10:19:25</td>
-                <td>成功</td>
-              </tr>
-              <tr>
-                <td>::1:57081</td>
-                <td>2016-01-06 10:35:12</td>
-                <td>成功</td>
-              </tr>
-            </tbody>
-          </table>
+        <table class="table" style="margin-bottom:0px;">
+          <thead>
+            <tr>
+              <th>登录IP</th>
+              <th>登录时间</th>
+              <th>状态</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>::1:55570</td>
+              <td>2016-01-08 15:50:28</td>
+              <td>成功</td>
+            </tr>
+            <tr>
+              <td>::1:64377</td>
+              <td>2016-01-08 10:27:44</td>
+              <td>成功</td>
+            </tr>
+            <tr>
+              <td>::1:64027</td>
+              <td>2016-01-08 10:19:25</td>
+              <td>成功</td>
+            </tr>
+            <tr>
+              <td>::1:57081</td>
+              <td>2016-01-06 10:35:12</td>
+              <td>成功</td>
+            </tr>
+          </tbody>
+        </table>
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-default" data-dismiss="modal">朕已阅</button>
@@ -329,19 +324,12 @@
 <div id="rightClickMenu">
   <ul class="list-group rightClickMenuList">
     <li class="list-group-item disabled">欢迎访问个人学习笔记</li>
-    <li class="list-group-item"><span>IP：</span><span id="admin_Login_ip"></span></li>
-    <li class="list-group-item"><span>地址：</span>河北省石家庄市</li>
+    <li class="list-group-item"><span>IP：</span>172.16.10.129</li>
+    <li class="list-group-item"><span>地址：</span>河南省郑州市</li>
     <li class="list-group-item"><span>系统：</span>Windows10 </li>
-    <li class="list-group-item"><span>浏览器：</span><span id="liulanqi"></span><span id="liulanqi"></span></li>
+    <li class="list-group-item"><span>浏览器：</span>Chrome47</li>
   </ul>
 </div>
-<script src="js/bootstrap.min.js"></script> 
-<script src="js/admin-scripts.js"></script>
-</body>
-<script src="js/common.js"></script>
-<script>	
-getLiuLanQi();
-</script>
 <script src="js/bootstrap.min.js"></script> 
 <script src="js/admin-scripts.js"></script>
 <script src="lib/ueditor/ueditor.config.js"></script> 
@@ -349,12 +337,6 @@ getLiuLanQi();
 <script src="lib/ueditor/lang/zh-cn/zh-cn.js"></script>  
 <script id="uploadEditor" type="text/plain" style="display:none;"></script>
 <script type="text/javascript">
-var imgUrl = "";
-var uploadPath="..//..//upload//";
-var PAGES =1;
-var pageMax = 1;
-selectAllColumnByPage(2,PAGES);
-getPageNum();
 var editor = UE.getEditor('article-content');
 window.onresize=function(){
     window.location.reload();
@@ -391,274 +373,6 @@ function upFiles() {
     var myFiles = _uploadEditor.getDialog("attachment");
     myFiles.open();
 }
-/*
- * 查询全部
- 设置页数
- */
- function getPageNum(){
-	$.ajax({
-	    type: "POST",
-	    url: "selectAllColumn.do", 
-	    dataType: "json",
-	  //  async: false, 
-	    success:function(data){	
-	  		var pageNum = data.result;
-	  		pageMax=pageNum;
-	  		var html = "";
-	  		$('.badge').html(data.columnNum);
-	  		$("#paginationpagenav").find("li").remove();
-	  		var ul=document.getElementById("paginationpagenav");
-
-	  		var objPrevious=document.createElement("li");
-	  		var objNext=document.createElement("li");
-	  		var objNow=document.createElement("li");
-	  		var objBegin=document.createElement("li");
-	  		var objEnd=document.createElement("li");
-	  		objBegin.style.display="inline-block";
-	  		objPrevious.style.display="inline-block";
-	  		objNow.style.display="inline-block";
-	  		objNext.style.display="inline-block";
-	  		objEnd.style.display="inline-block";
-	  		
-	  		objBegin.innerHTML="<a href='javascript:;' onClick='selectAllColumnByPage("+2+","+1+")' aria-label='Next'> <span aria-hidden='true'>&nbsp;首页&nbsp;</span> </a>";
-	  		objPrevious.innerHTML="<a href='javascript:;' onClick='selectAllColumnByPage("+1+","+PAGES+")' aria-label='Previous'> <span aria-hidden='true'>&nbsp;&laquo;&nbsp;</span> </a>";
-	  		objNow.innerHTML="<a href='javascript:;' >&nbsp;"+ PAGES+"&nbsp;</a>";
-	  		objNext.innerHTML="<a href='javascript:;' onClick='selectAllColumnByPage("+3+","+PAGES+")' > <span aria-hidden='true'>&nbsp;&raquo;&nbsp;</span> </a>";
-	  		objEnd.innerHTML="<a href='javascript:;' onClick='selectAllColumnByPage("+2+","+pageNum+")' > <span aria-hidden='true'>&nbsp;尾页&nbsp;</span> </a>";
-	  		ul.appendChild(objBegin);	
-	  		ul.appendChild(objPrevious);
-	  		ul.appendChild(objNow);
-	  		ul.appendChild(objNext);
-	  		ul.appendChild(objEnd);
-	  		
-	  		if(PAGES==1){
-	  			objBegin.className=("disabled");
-	  			objPrevious.className=("disabled");
-	  		}else{
-	  			objBegin.className=("");
-	  			objPrevious.className=("");
-	  		}
-			if(pageNum==PAGES){
-				objNext.className=("disabled");
-				objEnd.className=("disabled");
-			}else{
-				objNext.className=("");
-				objEnd.className=("");
-			}
-	   		console.log(data);
-	             
-	    },
-	    error:function(xhr,state,errorThrown){
-					//requesFail(xhr);
-	   	 console.log(xhr);
-		}
-		
-	
-	  
-	});
-}
-
-
-/*
- * 分页查询(1:减一2:不变3:加一)
- */
-function selectAllColumnByPage(type,page){
-	if(type==1){
-		if(page!=1)
-		PAGES = page-1;
-	}
-	else if(type==2){
-		PAGES = page;
-	}else if(type==3){
-		if(PAGES!=pageMax)
-		PAGES = page+1;
-	}
-	if(PAGES>pageMax){
-		PAGES=pageMax;
-	}
-	if(page!=null&&page!=''){
-
-		$.ajax({
-		    type: "POST",
-		    url: "selectAllColumnByPage.do", 
-		    dataType: "json",
-		    data:{"page":PAGES},
-		    success:function(data){	
-		  		var list = data.result;
-		  		var str = "";
-		  		$('.category-list').html(str);
-		  	  for (i in list) {
-		  		
-		  		  str+="<li>"+
-                  "<label>"+
-                  "<input name='category' type='radio' value='"
-                  +list[i].column_id+"' checked>"+
-                  list[i].column_name+" <em class='hidden-md'>( 栏目ID: <span>"+list[i].column_id+"</span> )</em></label>";
-		          
-		      }
-		  	$('.category-list').html(str);
-		  	getPageNum();
-		  	console.log(data);
-		             
-		    },
-		    error:function(xhr,state,errorThrown){
-						//requesFail(xhr);
-		   	 console.log(xhr);
-			}
-			
-		 
-		});
-	}else{
-		console.log("meiyouPage");
-	}
-};
-
-function addArticle(){
-	var id = '${sessionScope.adminLoginIng.admin_id}';
-	console.log("admin_id "+id);
-	var column_id = $("input[name='category']:checked").val();
-	var state = $("input[name='visibility']:checked").val();
-	var nowTime =  time();
-	var  article_title  = $('#article-title').val();
-	var  article_content = '';
-	//对编辑器的操作最好在编辑器ready之后再做
-	editor.ready(function() {
-	   
-	    //获取html内容，返回: <p>hello</p>
-	    article_content += editor.getContent();
-	});
-	var keywords = $('#keywords').val();
-	var describe = $('#describe').val();
-	var tags = $('#tags').val();
-	console.log("describe"+describe+
-	    	"keywords"+keywords+
-	    	"article_content"+article_content+
-	    	"article_title"+article_title+
-	    	"nowTime"+nowTime+
-	    	"column_id"+column_id+
-	    	"tags"+tags+
-	    	"user_id"+id+
-	    	"state"+state+
-	    	"imgUrl"+imgUrl);
-	$.ajax({
-	    type: "POST",
-	    url: "insertArticle.do", 
-	    dataType: "json",
-	    data:{
-	    	"describe":describe,
-	    	"keywords":keywords,
-	    	"article_content":article_content,
-	    	"article_title":article_title,
-	    	"nowTime":nowTime,
-	    	"column_id":column_id,
-	    	"tags":tags,
-	    	"user_id":id,
-	    	"state":state,
-	    	"imgUrl":imgUrl
-	    },
-	    success:function(data){	
-	    	var result = data.result;
-	    	if(result==true){
-	    		toastr.success("添加成功","文章");
-	    	}else{
-	    		toastr.error("添加失败","文章");
-	    	}
-	    	
-	    },
-	    error:function(data){
-	    	console.log(data);
-	    	toastr.error("连接服务器失败","文章");
-	    }
-	});
-}
-function time(){
-	var vWeek,vWeek_s,vDay;
-	vWeek = ["星期天","星期一","星期二","星期三","星期四","星期五","星期六"];
-	var date =  new Date();
-	year = date.getFullYear();
-	month = date.getMonth() + 1;
-	day = date.getDate();
-	hours = date.getHours(); 
-	minutes = date.getMinutes();
-	seconds = date.getSeconds();
-	vWeek_s = date.getDay();
-	document.getElementById("time1").innerHTML = year + "-" + month + "-" + day  + "\t" + hours + ":" + minutes +":" + seconds  ;
-	return (year + "-" + month + "-" + day  + "\t" + hours + ":" + minutes +":" + seconds );
-	};
-	setInterval("time()",1000);
-	
-	 function showPhoto(a){
-	  	   if(a!=null&&a!=''){
-	  		   
-	  		 var url = "showPhoto.do?url="+a;
-	  	    var xhr = new XMLHttpRequest();
-	  	    xhr.open('POST', url, true);
-	  	    xhr.responseType = "blob";
-	  	    //xhr.setRequestHeader("client_type", "DESKTOP_WEB");
-	  	    //xhr.setRequestHeader("desktop_web_access_key", _desktop_web_access_key);
-	  	    xhr.onload = function () {
-	  	        if (this.status == 200) {
-	  	            var blob = this.response;
-	  	            var img = document.getElementById("img");
-	  	            img.onload = function (e) {
-	  	                window.URL.revokeObjectURL(img.src);
-	  	            };
-	  	            img.src = window.URL.createObjectURL(blob);
-	  	            $("#img").html(img);
-	  	        }
-	  	    }
-	  	    xhr.send();
-
-	  		   
-		    	   $.ajax({
-		    		   url:"showPhoto.do",
-		    		   data:{
-		    			   "url":a
-		    		   },
-		    		   dataType:"json",
-					   type:"POST",
-					   success:function(data){
-						   
-						   $("#img").attr("src",data);
-					   },
-					   error:function(data){
-						   console.log(data);
-					   }
-		    	   });
-	  	   }
-	     }
-
-	
-	function upload(){
-		 var oFiles = document.getElementById("pop_file").files;
-
-		 var formData = new FormData();//创建FormData对象，将所需的信息封装到内部，以键值对的方式
-
-		 formData.append("pic",oFiles[0]);//参数封装格式,可以是文件，亦可以是普通的字符串
-	
-		 if(oFiles[0]==null){
-			 toastr.warning("请选择一个图片");	
-		 }else {
-			 
-			 
-			 $.ajax({
-				
-				url:"upload.do",
-				data:formData,
-				dataType:"json",
-				type:"POST",
-				contentType: false,
-				processData: false,
-				success:function(data){
-					var img = data.path;
-					imgUrl=img;
-					showPhoto(img);
-					
-				}
-			});
-		 }
-	}
-	
 </script>
 </body>
 </html>

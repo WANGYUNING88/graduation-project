@@ -56,19 +56,20 @@ public class ArticleAction {
 		String column_id = request.getParameter("column_id");
 		String tags = request.getParameter("tags");
 		int columnId =0;
-		if(column_id==null) {
+		if(column_id!=null) {
 			columnId = Integer.parseInt(column_id);
 		}
 		int userId =0;
 		
 		String user_id = request.getParameter("user_id");
-		if(user_id==null) {
+		if(user_id!=null) {
 			userId = Integer.parseInt(user_id);		
 		}
 		String state = request.getParameter("state");
 		String imgUrl = request.getParameter("imgUrl");
 		
 		boolean result =false;
+		System.out.println("userId "+userId+" "+"columnId "+columnId);
 		if(userId!=0&&columnId!=0) {
 			article.setArticle_content(article_content);
 			article.setArticle_state(state);
