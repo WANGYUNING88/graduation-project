@@ -33,6 +33,14 @@ public class Article {
 	private String article_label;
 	@Column(name="user_id")
 	private Integer user_id;
+	public String getArticle_describe() {
+		return article_describe;
+	}
+	public void setArticle_describe(String article_describe) {
+		this.article_describe = article_describe;
+	}
+	@Column(name="article_describe")
+	private String article_describe;
 	
 	@Column(name="article_state")
 	private String article_state;

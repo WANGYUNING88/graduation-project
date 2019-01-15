@@ -85,6 +85,17 @@ public class ArticleDao {
 		
 		
 	}
+	public List<String[]> selectArticleById(int article_id){
+		Session session = sessionFactory.getCurrentSession();
+		String sql = "SELECT a.*,b.ca_column_id FROM article a,column_article_relation b\r\n" + 
+				"where a.article_id = b.ca_article_id\r\n" + 
+				"and a.article_id = ?";
+		Query query = session.createSQLQuery(sql);
+		
+		query.setParameter(0, article_id);
+		List<String[]> list = query.list();
+		return list;
+	}
 //	public boolean updateBook(Article book) {
 //		Session session = sessionFactory.getCurrentSession();
 //		Book booked = session.get(Book.class, book.getBook_id());

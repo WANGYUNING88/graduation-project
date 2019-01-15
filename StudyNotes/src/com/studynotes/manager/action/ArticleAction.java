@@ -24,6 +24,7 @@ import com.studynotes.manager.service.ArticleSerivce;
 import org.apache.commons.io.FilenameUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -38,6 +39,20 @@ import org.springframework.web.multipart.MultipartFile;
 public class ArticleAction {
 	@Autowired
 	private ArticleSerivce articleService;
+	
+	
+	/*
+	 * 跳转到修改页面 
+	 */
+	
+	@RequestMapping("/toGo")
+	@ResponseBody
+	public String toGo(HttpServletResponse response,Model model,HttpServletRequest request) {
+		String id = request.getParameter("article_id");
+		System.out.println("获取的文章id："+id);
+		model.addAttribute("article_id", id);
+		return "update-article";
+	}
 	
 	/*
 	 * 添加文章
@@ -79,6 +94,8 @@ public class ArticleAction {
 			article.setArticle_label(tags);
 			article.setArticle_title(article_title);
 			article.setUser_id(userId);	
+			
+			article.setArticle_describe(describe);
 			int article_id =articleService.insertArticle(article);
 			CaRelation c = new CaRelation();
 			c.setCa_column_id(columnId);
@@ -95,6 +112,32 @@ public class ArticleAction {
 				e.printStackTrace();
 			}
 		}
+	
+	/*
+	 * 删除文章
+	 */
+	@RequestMapping("/deleteArticle")
+	@ResponseBody 
+	public void deleteArticle(HttpServletRequest request,HttpSession session,HttpServletResponse response) {
+
+		String article_id = request.getParameter("article_id");
+		System.out.println("获取要删除的文章 id为"+article_id);
+		boolean flag = false;
+		if(article_id!="") {
+			int id = Integer.parseInt(article_id);
+			flag = articleService.deleteArticle(id);
+		}
+		JSONObject json = new JSONObject();
+		json.put("result", flag);
+		try {
+			PrintWriter pw = response.getWriter();
+			pw.write(json.toJSONString());
+			System.out.println(json.toJSONString());
+		} catch (IOException e) {	
+			e.printStackTrace();
+		}
+		
+	}
 	
 //	/*
 //	 * 修改栏目
@@ -133,6 +176,30 @@ public class ArticleAction {
 //				e.printStackTrace();
 //			}
 //		}
+	
+	/*
+	 * 查询文章
+	 * @article_id
+	 */
+		@RequestMapping("/selectArticleById")
+		@ResponseBody 
+		public void selectArticleById(HttpServletRequest request,HttpSession session,HttpServletResponse response) {
+			response.setCharacterEncoding("UTF-8");
+			String article_id = request.getParameter("article_id");
+			System.out.println("获取的article_id"+article_id);
+			int id = Integer.valueOf(article_id);
+			List list = articleService.selectArticleById(id);
+			JSONObject json = new JSONObject();
+			json.put("result", list);
+			try {
+				PrintWriter pw = response.getWriter();
+				pw.write(json.toJSONString());
+				System.out.println(json.toJSONString());
+			} catch (IOException e) {	
+				e.printStackTrace();
+			}
+		}
+	
 /*
  * 查询全部
  */

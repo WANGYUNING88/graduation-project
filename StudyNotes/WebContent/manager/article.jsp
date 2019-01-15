@@ -551,7 +551,7 @@ function selectUserArticleByPage(type,page){
 		              "<td class='hidden-sm'>" + list[i][6] + "</td>" +
 		              "<td class='hidden-sm'>"+0+"</td>"+
 		              "<td>"+ list[i][3] + "</td>"+
-		              "<td id='td'><a href='update-article.jsp?article_id="
+		              "<td><a id='d' rel='"
 		              + list[i][0] +
 		            		  "' >修改</a> <a id='a' rel='"+
 		            		  list[i][0] +"'>删除</a></td>"+
@@ -576,6 +576,82 @@ function selectUserArticleByPage(type,page){
 		console.log("meiyouPage");
 	}
 };
+
+
+//是否确认删除
+$(document).on("click","#a", function(){
+	  			var name = $(this);
+				var id = name.attr("rel"); //对应id  
+				console.log("删除的id"+id);
+				if(window.confirm("此操作不可逆，是否确认？")){
+					$.ajax({
+						 type: "POST",
+						 url: "deleteArticle.do", 
+						 dataType: "json",
+						 data:{"article_id":id},
+						
+						 success:function(data){	
+							var result = data.result;
+							if(result==true){
+								toastr.success('id: '+id+'删除成功');
+								getPageNum();
+								if(level==1){
+									flag = true;
+									selectAllArticleByPage(2,PAGES);
+									$('#tishi').html("这是全部用户的文章。");
+								}else{
+									flag = false;
+									selectUserArticleByPage(2,PAGES);
+									$('#tishi').html("这是当前用户的文章。");
+								}
+							}else{
+								toastr.error('id: '+id+'删除失败');
+							}
+							console.log("删除"+result);
+								  
+						 },
+						 error:function(xhr,state,errorThrown){
+									//requesFail(xhr);
+							 console.log(xhr);
+						}
+						
+
+				   
+				   
+				    });
+				};
+
+	});
+	
+//修改文章
+$(document).on("click","#d", function(){
+	  			var name = $(this);
+				var id = name.attr("rel"); //对应id  
+				console.log("修改的id"+id);
+				
+					$.ajax({
+						 type: "POST",
+						 url: "toGo.do", 
+						 dataType: "json",
+						 data:{"article_id":id},
+						
+						 success:function(data){	
+							
+							console.log("点击修改"+result);
+								  
+						 },
+						 error:function(xhr,state,errorThrown){
+									//requesFail(xhr);
+							 console.log(xhr);
+						}
+						
+
+				   
+				   
+				    });
+				
+
+	});
 </script>
 </body>
 </html>

@@ -41,4 +41,7 @@ public class ArticleSerivce {
 	public boolean  insertCaRelation(CaRelation c) {
 		return articleDao.insertCaRelation(c);
 	}
+	public List<String[]> selectArticleById(int article_id){
+		return articleDao.selectArticleById(article_id);
+	}
 }
