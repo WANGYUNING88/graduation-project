@@ -112,12 +112,12 @@ String name = request.getParameter("article_id");//用request得到
     </aside>
     <div class="col-sm-9 col-sm-offset-3 col-md-10 col-lg-10 col-md-offset-2 main" id="main">
       <div class="row">
-        <form action="/Article/update" method="post" class="add-article-form">
+        
           <div class="col-md-9">
             <h1 class="page-header">文章修改</h1>
             <div class="form-group">
               <label for="article-title" class="sr-only">标题</label>
-              <input type="text" id="article-title" name="title" class="form-control" placeholder="在此处输入标题" value="" required autofocus autocomplete="off">
+              <input type="text" id="article-title" name="title" class="form-control" placeholder="在此处输入标题"  required autofocus autocomplete="off">
             </div>
             <div class="form-group">
               <label for="article-content" class="sr-only">内容</label>
@@ -126,7 +126,7 @@ String name = request.getParameter("article_id");//用request得到
             <div class="add-article-box">
               <h2 class="add-article-box-title"><span>关键字</span></h2>
               <div class="add-article-box-content">
-              	<input type="text" class="form-control" placeholder="请输入关键字" value="" name="keywords" autocomplete="off">
+              	<input type="text" class="form-control" placeholder="请输入关键字"  name="keywords" autocomplete="off">
                 <span class="prompt-text">多个标签请用英文逗号,隔开。</span>
               </div>
             </div>
@@ -152,14 +152,14 @@ String name = request.getParameter("article_id");//用request得到
             <div class="add-article-box">
               <h2 class="add-article-box-title"><span>标签</span></h2>
               <div class="add-article-box-content">
-                <input type="text" class="form-control" placeholder="输入新标签" value="" name="tags" autocomplete="off">
+                <input type="text" class="form-control" placeholder="输入新标签"  name="tags" autocomplete="off">
                 <span class="prompt-text">多个标签请用英文逗号,隔开</span> </div>
             </div>
              <div class="add-article-box">
               <h2 class="add-article-box-title"><span>标题图片</span></h2>
               <div class="add-article-box-content">
              	<form id="uploadForm" enctype='multipart/form-data'>
-              	 <input id="pop_file" type="file" accept=".jpg,.jpeg,.png" v-on:change="uploadFile($event)" name="pic" ref="file" value="" />
+              	 <input id="pop_file" type="file" accept=".jpg,.jpeg,.png" v-on:change="uploadFile($event)" name="pic" ref="file"  />
     			
 				</form>
 				 <input class="pop_but" type="submit" onClick="upload()" value="提交"/>
@@ -178,15 +178,13 @@ String name = request.getParameter("article_id");//用request得到
               <h2 class="add-article-box-title"><span>发布</span></h2>
               <div class="add-article-box-content">
               	<p><label>状态：</label><span class="article-status-display">已发布</span></p>
-                <p><label>公开度：</label><input type="radio" name="visibility" value="0" checked/>公开 <input type="radio" name="visibility" value="1" />加密</p>
-                <p><label>发布于：</label><span class="article-time-display"><input style="border: none;" type="datetime" name="time" value="2016-01-09 17:29:37" /></span></p>
+                <p><label>公开度：</label><input type="radio" name="visibility" value="0" />公开 <input type="radio" name="visibility" value="1" />加密</p>
+                <p><label>发布于：</label><span class="article-time-display"><input style="border: none;" type="datetime" name="time1" value="2016-01-09 17:29:37" /></span></p>
               </div>
               <div class="add-article-box-footer">
-                <button class="btn btn-primary" type="submit" name="submit">更新</button>
-              </div>
+				<button class="btn btn-primary" type="submit" name="submit" onClick="updateArticle()">更新</button>              </div>
             </div>
           </div>
-        </form>
       </div>
     </div>
   </div>
@@ -338,20 +336,21 @@ String name = request.getParameter("article_id");//用request得到
 <script id="uploadEditor" type="text/plain" style="display:none;"></script>
 <script type="text/javascript">
 var imgUrl = "";
+var imgUrlOrd = "";
 var uploadPath="..//..//upload//";
 var PAGES =1;
 var pageMax = 1;
 selectAllColumnByPage(2,PAGES);
 getPageNum();
 var id = "${param.article_id}";
-
+var user_id=0;
 console.log("文章的id"+id);
-selectArticleById(id);
+
 var editor = UE.getEditor('article-content');
 window.onresize=function(){
     window.location.reload();
 }
-
+selectArticleById(id);
 
 /*
  * 查询全部
@@ -454,7 +453,7 @@ function selectAllColumnByPage(type,page){
 		  		  str+="<li>"+
                   "<label>"+
                   "<input name='category' type='radio' value='"
-                  +list[i].column_id+"' checked>"+
+                  +list[i].column_id+"' >"+
                   list[i].column_name+" <em class='hidden-md'>( 栏目ID: <span>"+list[i].column_id+"</span> )</em></label>";
 		          
 		      }
@@ -547,46 +546,106 @@ function upload(){
 	 }
 }
 
-function selectArticleById(id){
-	if(id==""||id==null){
+function selectArticleById(aid){
+	if(aid==""||aid==null){
 		toastr.warning("获取id失败","文章");
 	}else{
 		 $.ajax({
 				
 				url:"selectArticleById.do",
 				data:{
-					"article_id":id
+					"article_id":aid
 				},
 				dataType:"json",
 				type:"POST",
-				contentType: false,
-				processData: false,
 				success:function(data){
 					
 					var list = data.result;
 					article_id = list[0][0];
-					var user_id = list[0][7];;
+					user_id = list[0][7];;
 					console.log("admin_id "+user_id);
-					var column_id = $("input[name='category']:checked").val();
-					var state = $("input[name='visibility']:checked").val();
-					document.getElementById("time1").innerHTML=list[0][3];
-					var  article_title  = $('#article-title').val(list[0][1]);
+					$("input[type='radio'][name='category'][value='"+list[0][10]+"']").attr("checked",true);  
+					$("input[type='radio'][name='visibility'][value='"+list[0][8]+"']").attr("checked",true);					$("#time1").html(list[0][3]);
+					$('#article-title').val(list[0][1]);
 					var  article_content = '';
 					//对编辑器的操作最好在编辑器ready之后再做
-					editor.ready(function() {
-					   
+					editor.ready(function() {				   
 					    //插入html内容，返回: <p>hello</p>
 					    editor.setContent(list[0][2], true);
 					});
-					var keywords = $('#keywords').val(list[0][4]);
-					var describe = $('#describe').val(list[0][9]);
-					var tags = $('#tags').val(list[0][6]);
+					$("input[name='keywords']").val(list[0][4]);
 					
+					$("input[name='tags']").val(list[0][6]);
+					$("input[name='time1']").val(list[0][3]);
+					$("textarea[name='describe']").val(list[0][9]);
+					imgUrlOrd=(list[0][5]);
 					showPhoto(list[0][5]);
 				}
 			});
 	}
 }
+function updateArticle(){
+	var id = user_id;
+	console.log("user_id "+id);
+	var column_id = $("input[name='category']:checked").val();
+	var state = $("input[name='visibility']:checked").val();
+	var nowTime =  $("input[name='time1']").val();
+	var  article_title  = $('#article-title').val();
+	var  article_content = '';
+	//对编辑器的操作最好在编辑器ready之后再做
+	editor.ready(function() {
+	   
+	    //获取html内容，返回: <p>hello</p>
+	    article_content += editor.getContent();
+	});
+	var keywords = $("input[name='keywords']").val();
+	var describe = $("input[name='describe']").val();
+	var tags = $("input[name='tags']").val();
+	if(imgUrl==""){
+		imgUrl=imgUrlOrd;
+	}
+	console.log("describe"+describe+
+	    	"keywords"+keywords+
+	    	"article_content"+article_content+
+	    	"article_title"+article_title+
+	    	"nowTime"+nowTime+
+	    	"column_id"+column_id+
+	    	"tags"+tags+
+	    	"user_id"+id+
+	    	"state"+state+
+	    	"imgUrl"+imgUrl);
+	$.ajax({
+	    type: "POST",
+	   //url: "insertArticle.do", 
+	    dataType: "json",
+	    data:{
+	    	"describe":describe,
+	    	"keywords":keywords,
+	    	"article_content":article_content,
+	    	"article_title":article_title,
+	    	"nowTime":nowTime,
+	    	"column_id":column_id,
+	    	"tags":tags,
+	    	"user_id":id,
+	    	"state":state,
+	    	"imgUrl":imgUrl
+	    },
+	    success:function(data){	
+	    	var result = data.result;
+	    	if(result==true){
+	    		toastr.success("修改成功","文章");
+	    	}else{
+	    		toastr.error("修改失败","文章");
+	    	}
+	    	
+	    },
+	    error:function(data){
+	    	console.log(data);
+	    	toastr.error("连接服务器失败","文章");
+	    }
+	});
+}
+
 </script>
 </body>
 </html>
